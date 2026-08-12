@@ -106,7 +106,7 @@ class ReleaseContractTests(unittest.TestCase):
         self.assertTrue(all(name.startswith("imo-tutor/") for name in names))
         self.assertFalse(any(name.startswith("project/") for name in names))
 
-    def test_release_workflow_validates_and_packages_skill(self):
+    def test_release_workflow_validates_packages_and_attaches_docs(self):
         workflow = (ROOT / ".github" / "workflows" / "release.yml").read_text(encoding="utf-8")
         self.assertIn("tags:", workflow)
         self.assertIn("'v*'", workflow)
@@ -114,6 +114,13 @@ class ReleaseContractTests(unittest.TestCase):
         self.assertIn('test "${GITHUB_REF_NAME}" = "v${VERSION}"', workflow)
         self.assertIn("cp -R skills/imo-tutor/. dist/imo-tutor/", workflow)
         self.assertIn('zip -qr "imo-tutor-${VERSION}.zip" imo-tutor', workflow)
+        for asset in [
+            "project/SETUP.md",
+            "project/PROJECT_INSTRUCTIONS.md",
+            "project/PROJECT_GUIDE.md",
+            "project/USER_GUIDE.md",
+        ]:
+            self.assertIn(asset, workflow)
         self.assertIn("gh \"${args[@]}\"", workflow)
         self.assertIn("--prerelease", workflow)
 
