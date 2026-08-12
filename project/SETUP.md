@@ -118,40 +118,47 @@ Google Drive
     └── Attempts
 ```
 
-## 6. 建立并 Pin 两个长期通用 Chat
+## 6. 新建并初始化两个长期通用 Chat
 
-在 IMO Tutor Project 中建立两个通用 Chat：
+这两个 Chat 不需要从旧 Project 导入，也不需要恢复历史消息。它们只是两个长期入口；真正的学习历史仍然在 Drive / Sheets。
 
-### `00｜使用说明`
+### A. 初始化 `00｜使用说明`
 
-用途：只询问系统怎么使用，例如：
-
-```text
-怎么开始一道新题？
-什么时候可以归档？
-H1 到 H6 有什么区别？
-怎么迁移到新的 Project？
-```
-
-不要在这里正式做题。
-
-### `01｜题库检索`
-
-用途：只查历史题，例如：
+1. 在 `IMO Tutor` Project 中新建一个普通 Chat。
+2. 在输入框发送下面这条首条消息：
 
 ```text
-P00237
-最近做错的2道几何题
-难度8以上用过H3提示的数论题
+这是 IMO Tutor 的长期使用说明对话。这里只回答系统安装、使用、归档、迁移、Hint 规则等问题，不在这里开始正式题目或 Attempt。
 ```
 
-如果决定重做某题，推荐另开一个新的工作 Chat，再输入：
+3. 将这个 Chat 改名为：
 
 ```text
-重做 P00237
+00｜使用说明
 ```
 
-创建后将 `00｜使用说明` 与 `01｜题库检索` **Pin 到 sidebar**，并保持不归档。Web 上可在 sidebar 对话的 `⋯` 菜单选择 `Pin chat`；移动端可长按对话后选择 `Pin chat`。
+4. 将它 **Pin 到 sidebar**，并保持不归档。
+
+### B. 初始化 `01｜题库检索`
+
+1. 在同一个 `IMO Tutor` Project 中再新建一个普通 Chat。
+2. 在输入框发送下面这条首条消息：
+
+```text
+这是 IMO Tutor 的长期题库检索对话。这里只用于从 Google Drive / Sheets 检索历史题、查看 Note、筛选重做题。正式重做时另开新的工作 Chat。
+```
+
+3. 将这个 Chat 改名为：
+
+```text
+01｜题库检索
+```
+
+4. 将它 **Pin 到 sidebar**，并保持不归档。
+
+Web 上可在 sidebar 对话的 `⋯` 菜单选择 `Pin chat`；移动端可长按对话后选择 `Pin chat`。
+
+这两条首条消息是为了让通用 Chat 从第一条消息开始就有清楚职责；真正的运行规则仍由 Project Instructions 约束。不要在这两个 Chat 中上传正式题目、提交正式解答或开始 redo。
 
 不要再创建长期的“新题”“批改”“Hints”通用 Chat；这些状态都应该留在具体题目的工作 Chat 中。
 
@@ -241,8 +248,8 @@ Google Drive write actions available
 IMO Tutor Data exists
 IMO Learning DB exists
 Problem_Index + Attempts initialized
-00｜使用说明 pinned
-01｜题库检索 pinned
+00｜使用说明 initialized and pinned
+01｜题库检索 initialized and pinned
 first problem archived
 new-chat retrieval works
 redo creates A02 without duplicate Problem
@@ -250,7 +257,7 @@ redo creates A02 without duplicate Problem
 
 ## 11. 迁移到新的 ChatGPT Project
 
-IMO Tutor 的长期数据在 Google Drive / Sheets，不在旧 Chat。
+IMO Tutor 的长期数据在 Google Drive / Sheets，不在旧 Chat。因此旧的 `00｜使用说明`、`01｜题库检索` 和旧工作 Chat 都不需要迁移。
 
 迁移时：
 
@@ -258,8 +265,8 @@ IMO Tutor 的长期数据在 Google Drive / Sheets，不在旧 Chat。
 2. 创建新的 ChatGPT Project，并复制 `PROJECT_INSTRUCTIONS.md`；
 3. 连接能够访问原 `IMO Tutor Data` 和 `IMO Learning DB` 的同一个 Google Drive，并确认写操作可用；
 4. 不要新建第二份同名数据库，除非你明确希望开始一套新数据；
-5. 在新 Project 中重新建立并 Pin `00｜使用说明`、`01｜题库检索`；
-6. 在 `01｜题库检索` 中输入一个已有 `Pxxxxx` 验证 readback；
+5. 按本文件第 6 节的方式，在新 Project 中**新建并初始化** `00｜使用说明` 与 `01｜题库检索`：新建 Chat → 发送职责首条消息 → 改名 → Pin；
+6. 在新的 `01｜题库检索` 中输入一个已有 `Pxxxxx` 验证 readback；
 7. 成功后即可继续使用，旧工作 Chat 不需要迁移。
 
 ## 12. 数据与隐私
