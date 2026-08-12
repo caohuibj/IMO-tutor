@@ -27,7 +27,7 @@ Rules:
 
 - Problem folder: `<problem_id>`
 - Problem images: `<problem_id>-problem-<NN>.<ext>`
-- Attempt ID: `<problem_id>-A<attempt_no:02d>`
+- Attempt ID: `<problem_id>-A<attempt_no:02d>`; attempt 100 naturally becomes `A100`
 - Solution images: `<attempt_id>-solution-<NN>.<ext>`
 - Durable note: native Google Doc named `<problem_id> Note`
 - Keep transcription in `Attempts.solution_transcription`; do not create separate transcription/review files in v0.2.
@@ -39,10 +39,10 @@ Rules:
 For intake, reuse an existing Problem when any of these exact identities is available:
 
 1. explicit `problem_id`;
-2. exact `source_id`;
+2. exact canonical globally unique `source_id`, such as `IMO-2024-P1`;
 3. exact normalized statement.
 
-Otherwise allocate the next `Pxxxxxx` from the maximum numeric suffix in `Problem_Index` plus one. Do not use UUIDs, timestamps, fuzzy matching, or a separate sequence store.
+Ambiguous/local source IDs such as `P1`, `1`, or `A3` are metadata only and must not trigger deduplication. Otherwise allocate the next `Pxxxxxx` from the maximum numeric suffix in `Problem_Index` plus one. Do not use UUIDs, timestamps, fuzzy matching, or a separate sequence store.
 
 ## Write points
 
