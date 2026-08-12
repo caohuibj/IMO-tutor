@@ -1,3 +1,4 @@
+import csv
 import json
 import re
 import tempfile
@@ -19,6 +20,24 @@ class ReleaseContractTests(unittest.TestCase):
         self.assertRegex(version, re.compile(r"^1\.0\.0(?:-rc\.[0-9]+)?$"))
         self.assertEqual(manifest["data_contract_version"], 1)
         self.assertEqual(manifest["taxonomy_version"], 1)
+
+    def test_release_csv_headers_exactly_match_schemas(self):
+        for csv_name, schema_name in [
+            ("Problem_Index.csv", "problem.schema.json"),
+            ("Attempts.csv", "attempt.schema.json"),
+        ]:
+            with (SKILL / "references" / csv_name).open(encoding="utf-8", newline="") as f:
+                headers = next(csv.reader(f))
+            schema = json.loads((SKILL / "references" / schema_name).read_text(encoding="utf-8"))
+            self.assertEqual(headers, list(schema["properties"]), csv_name)
+
+    def test_skill_internal_references_exist(self):
+        skill_text = (SKILL / "SKILL.md").read_text(encoding="utf-8")
+        references = set(re.findall(r"`((?:workflows|references)/[^`\n]+)`", skill_text))
+
+        self.assertGreaterEqual(len(references), 10)
+        for reference in sorted(references):
+            self.assertTrue((SKILL / reference).is_file(), reference)
 
     def test_student_docs_are_present_and_linked(self):
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
@@ -151,6 +170,9 @@ class ReleaseContractTests(unittest.TestCase):
         workflow = (ROOT / ".github" / "workflows" / "release.yml").read_text(encoding="utf-8")
         self.assertIn("tags:", workflow)
         self.assertIn("'v*'", workflow)
+        self.assertIn("fetch-depth: 0", workflow)
+        self.assertIn("git fetch origin main --no-tags", workflow)
+        self.assertIn('git merge-base --is-ancestor "$GITHUB_SHA" origin/main', workflow)
         self.assertIn("python -m unittest discover -s tests", workflow)
         self.assertIn('test "${GITHUB_REF_NAME}" = "v${VERSION}"', workflow)
         self.assertIn("cp -R skills/imo-tutor/. dist/imo-tutor/", workflow)
