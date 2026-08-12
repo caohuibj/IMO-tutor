@@ -37,11 +37,34 @@ IMO Tutor
 
 已经完成的题目 Chat 应归档，因此不会长期占据 Project chat list。
 
-## 3. 两个长期保留并 Pin 的通用 Chat
+## 3. 两个长期通用 Chat 如何建立
 
-创建后，将 `00｜使用说明` 和 `01｜题库检索` Pin 到 sidebar。Web 上可在 sidebar 对话的 `⋯` 菜单选择 `Pin chat`；移动端可长按对话后选择 `Pin chat`。
+这两个 Chat 不是需要迁移的数据对象。无论第一次安装还是迁移到新 Project，都按同一种方式**新建并初始化**：
+
+```text
+新建普通 Chat
+→ 发送一条职责说明
+→ 改名
+→ Pin 到 sidebar
+```
+
+真正的系统规则来自 Project Instructions；首条职责消息只是让该 Chat 从一开始就保持单一用途。
 
 ### `00｜使用说明`
+
+初始化首条消息：
+
+```text
+这是 IMO Tutor 的长期使用说明对话。这里只回答系统安装、使用、归档、迁移、Hint 规则等问题，不在这里开始正式题目或 Attempt。
+```
+
+发送后将 Chat 改名为：
+
+```text
+00｜使用说明
+```
+
+然后 Pin 到 sidebar，并保持不归档。
 
 职责：回答“系统怎么用”。
 
@@ -64,6 +87,20 @@ Drive 里应该有什么？
 这个 Chat 应长期保持轻量，不承载具体题目的 solution state。
 
 ### `01｜题库检索`
+
+初始化首条消息：
+
+```text
+这是 IMO Tutor 的长期题库检索对话。这里只用于从 Google Drive / Sheets 检索历史题、查看 Note、筛选重做题。正式重做时另开新的工作 Chat。
+```
+
+发送后将 Chat 改名为：
+
+```text
+01｜题库检索
+```
+
+然后 Pin 到 sidebar，并保持不归档。
 
 职责：查询 durable learning database，并帮助决定下一道要复习/重做的题。
 
@@ -90,6 +127,8 @@ P00237
 ```
 
 这样可避免长期检索 Chat 混入某一题的 `SOLUTION_LOCKED`、hint 和 solution review 状态。
+
+Web 上可在 sidebar 对话的 `⋯` 菜单选择 `Pin chat`；移动端可长按对话后选择 `Pin chat`。
 
 ## 4. 不要创建这些长期通用 Chat
 
@@ -217,12 +256,16 @@ Google Drive / Sheets 保持不变
     ↓
 连接同一个 Drive，并确认写操作可用
     ↓
-重新建立并 Pin 两个通用 Chat
+新建并初始化 00｜使用说明
+    ↓
+新建并初始化 01｜题库检索
     ↓
 用 Pxxxxx 验证检索
 ```
 
-旧工作 Chat 可以不迁移。只要新 Project 能读取和更新原 `IMO Learning DB` 与 `IMO Tutor Data`，长期学习记录就仍然存在。
+“新建并初始化”就是第 3 节的四步：**新建 Chat → 发送职责首条消息 → 改名 → Pin**。旧的两个通用 Chat 和旧工作 Chat 都不需要迁移。
+
+只要新 Project 能读取和更新原 `IMO Learning DB` 与 `IMO Tutor Data`，长期学习记录就仍然存在。
 
 ## 10. v1.x Workspace Scope
 
