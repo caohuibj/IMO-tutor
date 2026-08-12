@@ -2,171 +2,32 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "IMO Tutor Attempt",
   "type": "object",
-  "required": [
-    "attempt_id",
-    "problem_id",
-    "attempt_no",
-    "submitted_at",
-    "primary_domain",
-    "difficulty_rating",
-    "hint_max",
-    "verdict",
-    "result_bucket"
-  ],
+  "required": ["attempt_id", "problem_id", "attempt_no", "submitted_at", "primary_domain", "difficulty_rating", "hint_max", "verdict", "result_bucket"],
   "properties": {
-    "attempt_id": {
-      "type": "string",
-      "pattern": "^P[0-9]{6}-A[0-9]{2}$"
-    },
-    "problem_id": {
-      "type": "string",
-      "pattern": "^P[0-9]{6}$"
-    },
-    "attempt_no": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "source_id": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "primary_domain": {
-      "enum": [
-        "ALG",
-        "CMB",
-        "GEO",
-        "NT"
-      ]
-    },
-    "difficulty_rating": {
-      "type": "number",
-      "minimum": 1,
-      "maximum": 10,
-      "multipleOf": 0.5
-    },
-    "concept_tags": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
-    "method_tags": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
-    "search_text": {
-      "type": "string"
-    },
-    "started_at": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "submitted_at": {
-      "type": "string"
-    },
-    "duration_minutes": {
-      "type": [
-        "number",
-        "null"
-      ],
-      "minimum": 0
-    },
-    "hint_max": {
-      "enum": [
-        "H0",
-        "H1",
-        "H2",
-        "H3",
-        "H4",
-        "H5",
-        "H6"
-      ]
-    },
-    "hint_count": {
-      "type": "integer",
-      "minimum": 0
-    },
-    "verdict": {
-      "enum": [
-        "FULLY_CORRECT",
-        "MINOR_OMISSION",
-        "INCOMPLETE",
-        "RECOVERABLE_GAP",
-        "MAJOR_GAP",
-        "INCORRECT",
-        "UNSOLVED"
-      ]
-    },
-    "result_bucket": {
-      "enum": [
-        "CORRECT",
-        "PARTIAL",
-        "INCORRECT",
-        "UNSOLVED"
-      ]
-    },
-    "estimated_score": {
-      "type": [
-        "integer",
-        "null"
-      ],
-      "minimum": 0,
-      "maximum": 7
-    },
-    "first_gap": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "error_tags": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
-    "error_targets": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
-    "key_insight": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "solution_transcription": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "solution_image_urls": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
-    "image_archive_status": {
-      "enum": [
-        "ARCHIVED",
-        "PENDING",
-        "UNAVAILABLE"
-      ]
-    },
-    "note_url": {
-      "type": [
-        "string",
-        "null"
-      ]
-    }
+    "attempt_id": {"type": "string", "pattern": "^P[0-9]{6}-A[0-9]{2}$"},
+    "problem_id": {"type": "string", "pattern": "^P[0-9]{6}$"},
+    "attempt_no": {"type": "integer", "minimum": 1},
+    "source_id": {"type": ["string", "null"]},
+    "primary_domain": {"enum": ["ALG", "CMB", "GEO", "NT"]},
+    "difficulty_rating": {"type": "number", "minimum": 1, "maximum": 10, "multipleOf": 0.5},
+    "concept_tags": {"type": "array", "items": {"type": "string"}},
+    "method_tags": {"type": "array", "items": {"type": "string"}},
+    "search_text": {"type": "string"},
+    "started_at": {"type": ["string", "null"]},
+    "submitted_at": {"type": "string"},
+    "duration_minutes": {"type": ["number", "null"], "minimum": 0},
+    "hint_max": {"enum": ["H0", "H1", "H2", "H3", "H4", "H5", "H6"]},
+    "hint_count": {"type": "integer", "minimum": 0},
+    "verdict": {"enum": ["FULLY_CORRECT", "MINOR_OMISSION", "INCOMPLETE", "RECOVERABLE_GAP", "MAJOR_GAP", "INCORRECT", "UNSOLVED"]},
+    "result_bucket": {"enum": ["CORRECT", "PARTIAL", "INCORRECT", "UNSOLVED"]},
+    "estimated_score": {"type": ["integer", "null"], "minimum": 0, "maximum": 7},
+    "first_gap": {"type": ["string", "null"]},
+    "error_tags": {"type": "array", "items": {"type": "string"}},
+    "error_targets": {"type": "array", "items": {"type": "string"}},
+    "key_insight": {"type": ["string", "null"]},
+    "solution_transcription": {"type": ["string", "null"]},
+    "solution_image_urls": {"type": "array", "items": {"type": "string"}},
+    "image_archive_status": {"enum": ["ARCHIVED", "PENDING", "UNAVAILABLE"]},
+    "note_url": {"type": ["string", "null"]}
   }
 }
