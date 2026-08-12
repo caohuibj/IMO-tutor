@@ -25,19 +25,21 @@ Google Sheets: IMO Learning DB
 
 ## 2. 推荐的 Project 结构
 
-正常情况下，左侧 Project chat list / sidebar 只需要长期看到两个通用 Chat，加上少量当前正在做的题：
+正常情况下，左侧 Project chat list / sidebar 只需要长期看到两个 **Pinned** 通用 Chat，加上少量当前正在做的题：
 
 ```text
 IMO Tutor
-├── 00｜使用说明
-├── 01｜题库检索
-├── P000237｜IMO 2024 P1        ← 当前题
-└── P000241-A02｜Redo           ← 当前重做
+├── 00｜使用说明              ← Pin
+├── 01｜题库检索              ← Pin
+├── P000237｜IMO 2024 P1      ← 当前题
+└── P000241-A02｜Redo         ← 当前重做
 ```
 
 已经完成的题目 Chat 应归档，因此不会长期占据 Project chat list。
 
-## 3. 两个长期保留的通用 Chat
+## 3. 两个长期保留并 Pin 的通用 Chat
+
+创建后，将 `00｜使用说明` 和 `01｜题库检索` Pin 到 sidebar。Web 上可在 sidebar 对话的 `⋯` 菜单选择 `Pin chat`；移动端可长按对话后选择 `Pin chat`。
 
 ### `00｜使用说明`
 
@@ -200,21 +202,27 @@ P00237
 
 迁移的核心不是复制旧 Chat，而是让新的 Project 重新连接同一份 durable database。
 
+Skill 属于当前 ChatGPT account/workspace/surface 的能力，不属于某一个 Project。迁移前先确认目标环境中 `imo-tutor` 已安装可用；如果换了 surface，也要在实际使用的 surface 上确认 Skill 可用。
+
 ```text
 旧 Project
     ↓
 Google Drive / Sheets 保持不变
     ↓
-新 Project 安装 Skill
+目标 ChatGPT 环境确认 imo-tutor 已安装
+    ↓
+创建新 Project
     ↓
 复制 PROJECT_INSTRUCTIONS
     ↓
-连接同一个 Drive
+连接同一个 Drive，并确认写操作可用
+    ↓
+重新建立并 Pin 两个通用 Chat
     ↓
 用 Pxxxxx 验证检索
 ```
 
-旧工作 Chat 可以不迁移。只要新 Project 能读取原 `IMO Learning DB` 和 `IMO Tutor Data`，长期学习记录就仍然存在。
+旧工作 Chat 可以不迁移。只要新 Project 能读取和更新原 `IMO Learning DB` 与 `IMO Tutor Data`，长期学习记录就仍然存在。
 
 ## 10. v1.x Workspace Scope
 
