@@ -46,9 +46,9 @@ jobs:
           cp -R skills/imo-tutor/. dist/imo-tutor/
           (
             cd dist
-            zip -qr "imo-tutor-${VERSION}.zip" imo-tutor
+            zip -qr "imo-tutor-v${VERSION}.zip" imo-tutor
           )
-          unzip -l "dist/imo-tutor-${VERSION}.zip" | grep -q 'imo-tutor/SKILL.md'
+          unzip -l "dist/imo-tutor-v${VERSION}.zip" | grep -q 'imo-tutor/SKILL.md'
 
       - name: Create GitHub Release
         shell: bash
@@ -59,7 +59,9 @@ jobs:
           VERSION="$(tr -d '\n' < VERSION)"
           args=(
             release create "${GITHUB_REF_NAME}"
-            "dist/imo-tutor-${VERSION}.zip"
+            "dist/imo-tutor-v${VERSION}.zip"
+            "skills/imo-tutor/references/Problem_Index.csv"
+            "skills/imo-tutor/references/Attempts.csv"
             "project/SETUP.md"
             "project/PROJECT_INSTRUCTIONS.md"
             "project/PROJECT_GUIDE.md"
