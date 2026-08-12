@@ -41,9 +41,22 @@ class ReleaseContractTests(unittest.TestCase):
         ]:
             self.assertIn(excluded, readme)
 
+    def test_supported_environment_is_capability_gated(self):
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        setup = (PROJECT / "SETUP.md").read_text(encoding="utf-8")
+
+        self.assertIn("capability-gated", readme)
+        self.assertIn("Plugins → Skills → Create → Upload from your computer", readme)
+        self.assertIn("Google Drive / Docs / Sheets", readme)
+        self.assertIn("## 0. Preflight", setup)
+        self.assertIn("Upload from your computer", setup)
+        self.assertIn("Google Drive / Docs / Sheets 的写操作可用", setup)
+        self.assertIn("只读连接不足", setup)
+
     def test_workspace_sidebar_and_chat_lifecycle_are_documented(self):
         guide = (PROJECT / "PROJECT_GUIDE.md").read_text(encoding="utf-8")
         user = (PROJECT / "USER_GUIDE.md").read_text(encoding="utf-8")
+        setup = (PROJECT / "SETUP.md").read_text(encoding="utf-8")
 
         for text in [guide, user]:
             self.assertIn("00｜使用说明", text)
@@ -52,6 +65,8 @@ class ReleaseContractTests(unittest.TestCase):
         self.assertIn("一道题一个工作 Chat", guide)
         self.assertIn("完成即归档", guide)
         self.assertIn("P000237-A02｜Redo", guide)
+        self.assertIn("Pin chat", guide)
+        self.assertIn("Pin 到 sidebar", setup)
         self.assertIn("一题一 Chat", user)
         self.assertIn("重做 P000237", user)
 
@@ -59,6 +74,9 @@ class ReleaseContractTests(unittest.TestCase):
         setup = (PROJECT / "SETUP.md").read_text(encoding="utf-8")
         for required in [
             "GitHub Release",
+            "imo-tutor-v<version>.zip",
+            "Problem_Index.csv",
+            "Attempts.csv",
             "PROJECT_INSTRUCTIONS.md",
             "IMO Tutor Data",
             "IMO Learning DB",
@@ -75,6 +93,9 @@ class ReleaseContractTests(unittest.TestCase):
             "迁移到新的 ChatGPT Project",
         ]:
             self.assertIn(required, setup)
+
+        self.assertIn("目标 ChatGPT account/workspace/surface", setup)
+        self.assertNotIn("在新的 ChatGPT Project 安装", setup)
 
     def test_installable_skill_bundle_has_one_root_and_no_private_files(self):
         self.assertTrue((SKILL / "SKILL.md").exists())
@@ -106,15 +127,18 @@ class ReleaseContractTests(unittest.TestCase):
         self.assertTrue(all(name.startswith("imo-tutor/") for name in names))
         self.assertFalse(any(name.startswith("project/") for name in names))
 
-    def test_release_workflow_validates_packages_and_attaches_docs(self):
+    def test_release_workflow_validates_packages_and_attaches_onboarding_assets(self):
         workflow = (ROOT / ".github" / "workflows" / "release.yml").read_text(encoding="utf-8")
         self.assertIn("tags:", workflow)
         self.assertIn("'v*'", workflow)
         self.assertIn("python -m unittest discover -s tests", workflow)
         self.assertIn('test "${GITHUB_REF_NAME}" = "v${VERSION}"', workflow)
         self.assertIn("cp -R skills/imo-tutor/. dist/imo-tutor/", workflow)
-        self.assertIn('zip -qr "imo-tutor-${VERSION}.zip" imo-tutor', workflow)
+        self.assertIn('zip -qr "imo-tutor-v${VERSION}.zip" imo-tutor', workflow)
+        self.assertIn('"dist/imo-tutor-v${VERSION}.zip"', workflow)
         for asset in [
+            "skills/imo-tutor/references/Problem_Index.csv",
+            "skills/imo-tutor/references/Attempts.csv",
             "project/SETUP.md",
             "project/PROJECT_INSTRUCTIONS.md",
             "project/PROJECT_GUIDE.md",
