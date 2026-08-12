@@ -1,6 +1,6 @@
 {
   "name": "AoPS-style competition difficulty",
-  "scale_min": 1.0,
+  "scale_min": 5.5,
   "scale_max": 10.0,
   "increment": 0.5,
   "imo_baselines": {
