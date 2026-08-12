@@ -62,7 +62,8 @@ class ProjectOnlyContractTests(unittest.TestCase):
         for relative in RUNTIME_FILES:
             self.assertIn(Path(relative).name, setup)
         for required in [
-            "5.5-10.0",
+            "1.0-10.0",
+            "IMO/Shortlist baseline 只是校准锚点，不是下界",
             "SOLUTION_LOCKED",
             "Redo finalize 前禁止读取旧 Attempt solution information",
             "compact JSON array",
