@@ -18,4 +18,6 @@ Use progressive disclosure. Record every released hint level on the current atte
 2. If the user explicitly asks for a level, release that level and mark all lower levels as effectively consumed.
 3. Never silently jump levels because the student appears stuck.
 4. Keep hints problem-specific, short, and cumulative.
-5. Update `hint_max` and `hint_count` for the active attempt.
+5. Update `hint_max` and `hint_count` on the transient active attempt. If a durable `Attempts` row already exists because work was submitted, update its hint metadata as well.
+6. If the student explicitly gives up before submitting any solution, finalize the active attempt as `verdict=UNSOLVED` and `result_bucket=UNSOLVED` using the current hint metadata.
+7. If the student requests H6 before submitting any solution, first record the H6 release (`hint_max=H6` and the corresponding hint count), finalize the attempt as `UNSOLVED`, then release the complete solution. Do not overwrite an existing submitted-attempt verdict with `UNSOLVED`.

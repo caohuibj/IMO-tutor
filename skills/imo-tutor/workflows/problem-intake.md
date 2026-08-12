@@ -13,6 +13,7 @@ Use for a new problem supplied as an image, screenshot, or text.
 7. Rate global difficulty on the AoPS-style scale in `difficulty.json`, using 0.5 increments. Official problem position is a prior, not a hard constraint.
 8. Perform enough internal analysis to build a valid solution route and hint ladder. Keep decisive information locked.
 9. Create/update the durable problem record immediately with `status=ANALYZED`.
+10. Initialize a transient active attempt in the current chat/session with the next `attempt_no`, `hint_max=H0`, and `hint_count=0`. Do not write a durable `Attempts` row until the student submits work or explicitly ends the attempt without a submission.
 
 ## Student-visible output at H0
 

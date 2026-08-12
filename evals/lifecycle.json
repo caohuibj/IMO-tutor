@@ -1,0 +1,65 @@
+{
+  "name": "attempt lifecycle behavioral evals",
+  "cases": [
+    {
+      "id": "latest_vs_historical_results",
+      "attempts": [
+        {"problem_id": "P000001", "primary_domain": "GEO", "submitted_at": "2026-08-10T10:00:00+08:00", "result_bucket": "INCORRECT"},
+        {"problem_id": "P000001", "primary_domain": "GEO", "submitted_at": "2026-08-11T10:00:00+08:00", "result_bucket": "CORRECT"},
+        {"problem_id": "P000002", "primary_domain": "GEO", "submitted_at": "2026-08-09T10:00:00+08:00", "result_bucket": "INCORRECT"},
+        {"problem_id": "P000003", "primary_domain": "GEO", "submitted_at": "2026-08-08T10:00:00+08:00", "result_bucket": "INCORRECT"}
+      ],
+      "queries": [
+        {
+          "input": "最近做错的2道几何题",
+          "structured": {
+            "domains": ["GEO"],
+            "result_buckets": ["INCORRECT"],
+            "historical_result_match": false,
+            "sort_by": "attempt_at",
+            "sort_order": "desc",
+            "limit": 2
+          },
+          "expected_problem_ids": ["P000002", "P000003"]
+        },
+        {
+          "input": "找我曾经做错过的几何题",
+          "structured": {
+            "domains": ["GEO"],
+            "result_buckets": ["INCORRECT"],
+            "historical_result_match": true,
+            "sort_by": "attempt_at",
+            "sort_order": "desc",
+            "limit": 10
+          },
+          "expected_problem_ids": ["P000001", "P000002", "P000003"]
+        }
+      ]
+    },
+    {
+      "id": "transient_attempt_hints_then_give_up",
+      "events": ["new_problem", "request_H1", "request_H2", "give_up"],
+      "expect_before_end": {
+        "durable_attempt_rows": 0,
+        "hint_max": "H2",
+        "hint_count": 2
+      },
+      "expect_after_end": {
+        "durable_attempt_rows": 1,
+        "verdict": "UNSOLVED",
+        "result_bucket": "UNSOLVED",
+        "hint_max": "H2"
+      }
+    },
+    {
+      "id": "h6_before_submission",
+      "events": ["new_problem", "request_H6"],
+      "expected": {
+        "durable_attempt_rows": 1,
+        "verdict": "UNSOLVED",
+        "result_bucket": "UNSOLVED",
+        "hint_max": "H6"
+      }
+    }
+  ]
+}

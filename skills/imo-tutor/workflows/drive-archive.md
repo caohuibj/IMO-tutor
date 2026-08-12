@@ -16,9 +16,25 @@ If the project explicitly configures other targets, use them.
 
 Immediately write/update a `Problem_Index` record with statement, source, tags, difficulty, creation time, and `status=ANALYZED`.
 
-### New attempt
+### Active attempt
+
+Before the student submits work, keep the active attempt as transient chat/session state. Do not write an incomplete `Attempts` row that lacks `submitted_at`, `verdict`, or `result_bucket`.
+
+### Submitted attempt
 
 Write an `Attempts` record when the student submits work. Preserve the original solution image reference/status and store the transcription/note link.
+
+### End without submission
+
+If the student explicitly gives up or requests H6 before submitting any solution, materialize a durable `Attempts` row at that time with:
+
+- `submitted_at` set to the attempt end time;
+- `verdict=UNSOLVED`;
+- `result_bucket=UNSOLVED`;
+- the final `hint_max` and `hint_count`;
+- empty/null solution fields as appropriate.
+
+If H6 caused the attempt to end, record `hint_max=H6`. Do not invent a `first_gap`, student solution, or student-derived key insight when none exists.
 
 ### Review
 
