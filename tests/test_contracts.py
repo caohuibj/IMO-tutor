@@ -21,10 +21,10 @@ class ContractTests(unittest.TestCase):
 
     def test_difficulty_scale(self):
         cfg = self.load_json("difficulty.json")
-        self.assertEqual(cfg["scale_min"], 5.5)
+        self.assertEqual(cfg["scale_min"], 1.0)
         self.assertEqual(cfg["scale_max"], 10.0)
         self.assertEqual(cfg["increment"], 0.5)
-        for value in [5.5, 6.5, 7.5, 8.0, 9.5, 10.0]:
+        for value in [1.0, 3.0, 5.5, 6.5, 7.5, 8.0, 9.5, 10.0]:
             self.assertEqual((value * 2) % 1, 0)
             self.assertGreaterEqual(value, cfg["scale_min"])
             self.assertLessEqual(value, cfg["scale_max"])
