@@ -7,10 +7,10 @@ Use for a new problem supplied as an image, screenshot, or text.
 1. Read and normalize the statement. Preserve mathematical quantifiers, domains, equality/inequality signs, and geometric incidence conditions.
 2. Decide whether this is genuinely a new problem before allocating an ID:
    - explicit existing `problem_id` -> reuse that Problem;
-   - exact existing `source_id` -> reuse that Problem;
+   - canonical globally unique `source_id` -> reuse that Problem on exact match;
    - exact normalized-statement match -> reuse that Problem;
    - otherwise create a new Problem.
-   Do not use fuzzy/semantic deduplication in v0.2.
+   A `source_id` is canonical for dedup only when it includes enough source namespace to identify one problem globally, for example `IMO-2024-P1`. Ambiguous/local values such as `P1`, `1`, or `A3` are metadata only and must not trigger deduplication. Do not use fuzzy/semantic deduplication in v0.2.
 3. For a genuinely new Problem, allocate `P000001`, `P000002`, ... from `Problem_Index`: read existing `problem_id` values, take the largest numeric suffix, add 1, and zero-pad to six digits. If there are no problem rows, start at `P000001`. Do not reuse IDs.
 4. Create the Drive folder named exactly `<problem_id>` under the configured root. For supplied problem images, archive each materializable original as `<problem_id>-problem-01.<ext>`, `<problem_id>-problem-02.<ext>`, ... before the first `Problem_Index` write. If the runtime cannot expose uploadable bytes/file references, do not claim the image is archived and treat the persistence loop as incomplete.
 5. Record source metadata when known: competition, year, official number, shortlist code, region, and type.
