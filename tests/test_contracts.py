@@ -62,7 +62,19 @@ class ContractTests(unittest.TestCase):
 
         self.assertRegex("P000001-A01", re.compile(attempt_pattern))
         self.assertRegex("P999999-A99", re.compile(attempt_pattern))
+        self.assertRegex("P000001-A100", re.compile(attempt_pattern))
+        self.assertRegex("P000001-A1000", re.compile(attempt_pattern))
         self.assertNotRegex("P000001-A1", re.compile(attempt_pattern))
+
+    def test_source_id_dedup_requires_canonical_identity(self):
+        intake = (WORKFLOWS / "problem-intake.md").read_text(encoding="utf-8")
+        archive = (WORKFLOWS / "drive-archive.md").read_text(encoding="utf-8")
+
+        for workflow in [intake, archive]:
+            self.assertIn("canonical globally unique `source_id`", workflow)
+            self.assertIn("`IMO-2024-P1`", workflow)
+            self.assertIn("`P1`", workflow)
+            self.assertIn("must not trigger deduplication", workflow)
 
     def test_retrieval_goldens_parse(self):
         path = ROOT / "evals" / "retrieval.json"
@@ -87,6 +99,23 @@ class ContractTests(unittest.TestCase):
                 sort_by = query["structured"].get("sort_by")
                 if sort_by:
                     self.assertIn(sort_by, allowed)
+
+    def test_lifecycle_fixture_ids_match_schemas(self):
+        problem_pattern = re.compile(self.load_json("problem.schema.json")["properties"]["problem_id"]["pattern"])
+        attempt_pattern = re.compile(self.load_json("attempt.schema.json")["properties"]["attempt_id"]["pattern"])
+        lifecycle = json.loads((ROOT / "evals" / "lifecycle.json").read_text(encoding="utf-8"))
+
+        for case in lifecycle["cases"]:
+            for section in [case.get("existing", {}), case.get("expected", {})]:
+                problem_id = section.get("problem_id")
+                attempt_id = section.get("attempt_id")
+                attempt_no = section.get("attempt_no")
+                if problem_id:
+                    self.assertRegex(problem_id, problem_pattern, case["id"])
+                if attempt_id:
+                    self.assertRegex(attempt_id, attempt_pattern, case["id"])
+                if problem_id and attempt_no and attempt_id:
+                    self.assertEqual(attempt_id, f"{problem_id}-A{attempt_no:02d}", case["id"])
 
     def test_retrieval_workflow_matches_contract(self):
         workflow = (WORKFLOWS / "problem-retrieval.md").read_text(encoding="utf-8")
