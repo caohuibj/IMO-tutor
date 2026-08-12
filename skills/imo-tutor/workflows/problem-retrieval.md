@@ -52,7 +52,7 @@ Use the shortest structured path that can answer the query.
 
 ### Latest-versus-historical result semantics
 
-When `result_buckets` is present and `historical_result_match=false`, first keep only the latest Attempt for each `problem_id`, then apply the query filters. An older incorrect Attempt must not make a problem match after a later correct Attempt.
+When `result_buckets` is present and `historical_result_match=false`, scan newest first and keep only the first (latest) Attempt encountered for each `problem_id`, then apply the query filters. An older incorrect Attempt must not make a problem match after a later correct Attempt.
 
 When `historical_result_match=true`, any historical Attempt may satisfy the result filter. Deduplicate by `problem_id` and rank each problem by its most recent matching Attempt.
 
@@ -67,7 +67,7 @@ For `重做 P000237`:
 1. normalize and locate the existing `Problem_Index` row;
 2. before submission, read only the statement and safe metadata needed to start the attempt: `problem_id`, source, domain, difficulty, and other non-spoiling metadata;
 3. do **not** load the durable note or old `Attempts` rows before the new attempt is finalized, because they may contain old solutions, key insights, error details, hint history, or reference-solution information;
-4. reuse the existing Problem folder and note identity; do not append a new `Problem_Index` row;
+4. reuse the existing Problem folder and note identity. Do not append a new `Problem_Index` row;
 5. start a transient active attempt with `attempt_no = attempt_count + 1`, `attempt_id = <problem_id>-A<attempt_no:02d>`, `hint_max=H0`, and `hint_count=0`;
 6. set `SOLUTION_LOCKED` and follow the normal hint/review flow;
 7. materialize exactly one new durable `Attempts` row only when the student submits work or explicitly ends the attempt without a submission;
