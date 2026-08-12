@@ -1,0 +1,69 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate contracts
+        run: python -m unittest discover -s tests
+
+      - name: Verify tag and version
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="$(tr -d '\n' < VERSION)"
+          test "${GITHUB_REF_NAME}" = "v${VERSION}"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          version = Path("VERSION").read_text(encoding="utf-8").strip()
+          manifest = json.loads(Path("manifest.json").read_text(encoding="utf-8"))
+          if manifest["version"] != version:
+              raise SystemExit(f"manifest version {manifest['version']} != VERSION {version}")
+          PY
+
+      - name: Package installable Skill
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="$(tr -d '\n' < VERSION)"
+          mkdir -p dist/imo-tutor
+          cp -R skills/imo-tutor/. dist/imo-tutor/
+          (
+            cd dist
+            zip -qr "imo-tutor-${VERSION}.zip" imo-tutor
+          )
+          unzip -l "dist/imo-tutor-${VERSION}.zip" | grep -q 'imo-tutor/SKILL.md'
+
+      - name: Create GitHub Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          VERSION="$(tr -d '\n' < VERSION)"
+          args=(
+            release create "${GITHUB_REF_NAME}"
+            "dist/imo-tutor-${VERSION}.zip"
+            --title "IMO Tutor ${GITHUB_REF_NAME}"
+            --generate-notes
+          )
+          if [[ "${VERSION}" == *-* ]]; then
+            args+=(--prerelease)
+          fi
+          gh "${args[@]}"
