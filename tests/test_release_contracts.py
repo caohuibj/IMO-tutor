@@ -70,6 +70,26 @@ class ReleaseContractTests(unittest.TestCase):
         self.assertIn("一题一 Chat", user)
         self.assertIn("重做 P000237", user)
 
+    def test_general_chats_have_explicit_initialization_steps(self):
+        setup = (PROJECT / "SETUP.md").read_text(encoding="utf-8")
+        guide = (PROJECT / "PROJECT_GUIDE.md").read_text(encoding="utf-8")
+
+        self.assertIn("新建并初始化两个长期通用 Chat", setup)
+        self.assertIn("新建普通 Chat", guide)
+        self.assertIn("发送一条职责说明", guide)
+        self.assertIn("改名", guide)
+        self.assertIn("Pin 到 sidebar", guide)
+        self.assertIn(
+            "这是 IMO Tutor 的长期使用说明对话。这里只回答系统安装、使用、归档、迁移、Hint 规则等问题，不在这里开始正式题目或 Attempt。",
+            setup,
+        )
+        self.assertIn(
+            "这是 IMO Tutor 的长期题库检索对话。这里只用于从 Google Drive / Sheets 检索历史题、查看 Note、筛选重做题。正式重做时另开新的工作 Chat。",
+            setup,
+        )
+        self.assertIn("旧的 `00｜使用说明`、`01｜题库检索` 和旧工作 Chat 都不需要迁移", setup)
+        self.assertIn("新建 Chat → 发送职责首条消息 → 改名 → Pin", setup)
+
     def test_setup_covers_fresh_student_acceptance_path(self):
         setup = (PROJECT / "SETUP.md").read_text(encoding="utf-8")
         for required in [
