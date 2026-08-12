@@ -6,6 +6,10 @@ Use for exact IDs, fuzzy natural-language searches, and redo requests in a new o
 
 Query Google Drive/Sheets durable records. Do not answer from remembered chat history when the request refers to prior student work. Continue using `Problem_Index`, `Attempts`, and the durable problem note; do not introduce vector search or another retrieval store for v0.4.
 
+## Action precedence
+
+Classify the user action before loading durable content. If the request is a redo, route directly to **Redo mode**. Redo intent takes precedence over exact lookup, even when the request contains an exact or short-form Problem ID such as `重做 P00237`; normalize the ID, but do not load `note_url` content or old `Attempts` before the new Attempt is finalized.
+
 ## Exact lookup
 
 Canonical stored IDs use six digits, for example `P000237`. Accept a user-entered `P` followed by 1-6 digits and left-pad the numeric part to six digits before lookup, so `P00237` resolves to `P000237`.
