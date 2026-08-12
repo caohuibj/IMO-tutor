@@ -60,6 +60,10 @@ jobs:
           args=(
             release create "${GITHUB_REF_NAME}"
             "dist/imo-tutor-${VERSION}.zip"
+            "project/SETUP.md"
+            "project/PROJECT_INSTRUCTIONS.md"
+            "project/PROJECT_GUIDE.md"
+            "project/USER_GUIDE.md"
             --title "IMO Tutor ${GITHUB_REF_NAME}"
             --generate-notes
           )
