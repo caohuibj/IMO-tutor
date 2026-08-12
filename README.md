@@ -16,6 +16,18 @@ IMO Tutor 由一个 ChatGPT Skill、Project Instructions 和学生自己的 Goog
 
 每个学生使用自己的私有 Google Drive。公共仓库只包含 workflow、schema、文档和测试，不包含学生解答、私人 Drive ID 或 credentials。
 
+## 支持环境
+
+v1.0 采用 **capability-gated** 支持方式，不假设所有 ChatGPT plan / workspace 都具有相同功能。安装前先确认：
+
+- ChatGPT 中存在 `Plugins → Skills → Create → Upload from your computer`，并允许你上传 Personal Skill；
+- 你的 workspace 管理策略没有禁止 Skill upload / install；
+- 可以创建和使用 ChatGPT Project；
+- 已连接 Google Drive app，并且 Google Drive / Docs / Sheets 的写操作可用；
+- 你有权限在自己的 Drive 中创建/更新文件和 Google Sheet。
+
+如果缺少上述任一能力，当前环境不属于 IMO Tutor v1.0 的支持范围；不要继续初始化数据库。Personal Skills、Google app actions 和 workspace 权限可能随 ChatGPT plan / 管理策略变化，具体以 OpenAI 当前产品界面与官方帮助为准。
+
 ## 核心体验
 
 - **No spoiler by default**：新题进入 `SOLUTION_LOCKED`，除非学生主动请求提示，否则不提前泄露关键引理、构造或完整解法。
@@ -37,12 +49,12 @@ IMO Tutor 由一个 ChatGPT Skill、Project Instructions 和学生自己的 Goog
 
 ## 推荐的 Project 对话结构
 
-安装后只长期保留两个通用对话；其他题目一题一 Chat，完成即归档。
+安装后只长期保留两个通用对话，并把它们 Pin 到 sidebar；其他题目一题一 Chat，完成即归档。
 
 ```text
 IMO Tutor
-├── 00｜使用说明        ← 长期保留；只问怎么使用系统
-├── 01｜题库检索        ← 长期保留；只查历史题和选择重做题
+├── 00｜使用说明        ← Pin；只问怎么使用系统
+├── 01｜题库检索        ← Pin；只查历史题和选择重做题
 └── 当前题目 Chat       ← 一题一 Chat；完成并 ARCHIVED 后归档
 ```
 
