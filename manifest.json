@@ -1,6 +1,6 @@
 {
   "name": "IMO Tutor",
-  "version": "0.2.0-alpha.1",
+  "version": "0.4.0-alpha.1",
   "skill_path": "skills/imo-tutor",
   "project_instructions": "project/PROJECT_INSTRUCTIONS.md",
   "storage": {

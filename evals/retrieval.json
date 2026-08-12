@@ -1,5 +1,12 @@
 {
-  "name": "retrieval parsing evals",
+  "name": "retrieval parsing and execution evals",
+  "exact_cases": [
+    {
+      "input": "P00237",
+      "expected_problem_id": "P000237",
+      "action": "return_note"
+    }
+  ],
   "cases": [
     {
       "input": "最近做错的2道几何题",
@@ -13,14 +20,24 @@
       }
     },
     {
-      "input": "最近没完全做对的3道难度8以上数论题",
+      "input": "难度8以上用过H3提示的数论题",
       "expected": {
         "domains": ["NT"],
         "difficulty_gte": 8.0,
-        "result_buckets": ["PARTIAL", "INCORRECT", "UNSOLVED"],
+        "hint_min": "H3",
+        "sort_by": "attempt_at",
+        "sort_order": "desc"
+      }
+    },
+    {
+      "input": "那道我用了反演但最后逻辑有问题的几何题",
+      "expected": {
+        "domains": ["GEO"],
+        "method_tags": ["M.GEO.Inversion"],
+        "error_tags": ["LOGIC.*"],
         "sort_by": "attempt_at",
         "sort_order": "desc",
-        "limit": 3
+        "limit": 1
       }
     },
     {
@@ -30,6 +47,121 @@
         "result_buckets": ["INCORRECT"],
         "historical_result_match": true
       }
+    }
+  ],
+  "execution_fixture": [
+    {
+      "problem_id": "P000101",
+      "primary_domain": "GEO",
+      "difficulty_rating": 8.5,
+      "submitted_at": "2026-08-01T10:00:00+08:00",
+      "result_bucket": "INCORRECT",
+      "hint_max": "H3",
+      "method_tags": ["M.GEO.Inversion"],
+      "error_tags": ["LOGIC.UNPROVED_CLAIM"],
+      "search_text": "used inversion; final implication was not justified"
+    },
+    {
+      "problem_id": "P000101",
+      "primary_domain": "GEO",
+      "difficulty_rating": 8.5,
+      "submitted_at": "2026-08-10T10:00:00+08:00",
+      "result_bucket": "CORRECT",
+      "hint_max": "H0",
+      "method_tags": ["M.GEO.SimilarTriangles"],
+      "error_tags": [],
+      "search_text": "clean similarity solution"
+    },
+    {
+      "problem_id": "P000102",
+      "primary_domain": "GEO",
+      "difficulty_rating": 8.0,
+      "submitted_at": "2026-08-09T10:00:00+08:00",
+      "result_bucket": "INCORRECT",
+      "hint_max": "H0",
+      "method_tags": ["M.GEO.AngleChasing"],
+      "error_tags": ["TECHNIQUE.INCORRECT_APPLICATION"],
+      "search_text": "introduced an auxiliary tangent but angle chase failed"
+    },
+    {
+      "problem_id": "P000103",
+      "primary_domain": "GEO",
+      "difficulty_rating": 9.0,
+      "submitted_at": "2026-08-08T10:00:00+08:00",
+      "result_bucket": "INCORRECT",
+      "hint_max": "H2",
+      "method_tags": ["M.GEO.Inversion"],
+      "error_tags": ["LOGIC.INVALID_IMPLICATION"],
+      "search_text": "inversion reduced the configuration but the last implication was invalid"
+    },
+    {
+      "problem_id": "P000104",
+      "primary_domain": "NT",
+      "difficulty_rating": 8.5,
+      "submitted_at": "2026-08-07T10:00:00+08:00",
+      "result_bucket": "PARTIAL",
+      "hint_max": "H3",
+      "method_tags": ["M.NT.VietaJumping"],
+      "error_tags": ["OBSERVATION.KEY_STRUCTURE_MISSED"],
+      "search_text": "Vieta jumping after H3"
+    },
+    {
+      "problem_id": "P000105",
+      "primary_domain": "NT",
+      "difficulty_rating": 9.0,
+      "submitted_at": "2026-08-06T10:00:00+08:00",
+      "result_bucket": "CORRECT",
+      "hint_max": "H4",
+      "method_tags": ["M.NT.LTE"],
+      "error_tags": [],
+      "search_text": "completed with LTE after H4"
+    }
+  ],
+  "execution_cases": [
+    {
+      "id": "latest_incorrect_geo",
+      "query": {
+        "domains": ["GEO"],
+        "result_buckets": ["INCORRECT"],
+        "historical_result_match": false,
+        "sort_by": "attempt_at",
+        "sort_order": "desc",
+        "limit": 2
+      },
+      "expected_problem_ids": ["P000102", "P000103"]
+    },
+    {
+      "id": "nt_h3_or_more",
+      "query": {
+        "domains": ["NT"],
+        "difficulty_gte": 8.0,
+        "hint_min": "H3",
+        "sort_by": "attempt_at",
+        "sort_order": "desc"
+      },
+      "expected_problem_ids": ["P000104", "P000105"]
+    },
+    {
+      "id": "inversion_with_logic_error",
+      "query": {
+        "domains": ["GEO"],
+        "method_tags": ["M.GEO.Inversion"],
+        "error_tags": ["LOGIC.*"],
+        "sort_by": "attempt_at",
+        "sort_order": "desc",
+        "limit": 1
+      },
+      "expected_problem_ids": ["P000103"]
+    },
+    {
+      "id": "search_text_fallback_after_structure",
+      "query": {
+        "domains": ["GEO"],
+        "keywords": ["tangent"],
+        "sort_by": "attempt_at",
+        "sort_order": "desc"
+      },
+      "expected_problem_ids": ["P000102"]
     }
   ]
 }

@@ -1,0 +1,63 @@
+{
+  "name": "redo isolation and progress comparison evals",
+  "cases": [
+    {
+      "id": "redo_isolates_history_until_finalized",
+      "problem_id": "P000237",
+      "safe_pre_submit_fields": [
+        "problem_id",
+        "statement",
+        "source",
+        "primary_domain",
+        "difficulty_rating"
+      ],
+      "must_not_load_before_submission": [
+        "note_url content",
+        "old Attempts rows",
+        "solution_transcription",
+        "key_insight",
+        "first_gap",
+        "error_tags",
+        "old hint history",
+        "reference solution"
+      ],
+      "expected": {
+        "attempt_no": 2,
+        "attempt_id": "P000237-A02",
+        "hint_max": "H0",
+        "solution_locked": true,
+        "new_problem_index_rows": 0
+      }
+    },
+    {
+      "id": "redo_progress_comparison",
+      "previous": {
+        "attempt_id": "P000237-A01",
+        "duration_minutes": 52,
+        "hint_max": "H3",
+        "hint_count": 3,
+        "estimated_score": 3,
+        "result_bucket": "PARTIAL",
+        "error_tags": ["LOGIC.UNPROVED_CLAIM"],
+        "method_tags": ["M.GEO.Inversion"]
+      },
+      "current": {
+        "attempt_id": "P000237-A02",
+        "duration_minutes": 24,
+        "hint_max": "H0",
+        "hint_count": 0,
+        "estimated_score": 7,
+        "result_bucket": "CORRECT",
+        "error_tags": [],
+        "method_tags": ["M.GEO.Inversion"]
+      },
+      "expected": {
+        "duration_delta": -28,
+        "hint_change": "H3->H0",
+        "score_delta": 4,
+        "result_change": "PARTIAL->CORRECT",
+        "comparison_source": "Attempts"
+      }
+    }
+  ]
+}
