@@ -14,7 +14,7 @@ For `P000237`, search the matching `Problem_Index` row and then load the linked 
 
 Translate the user's wording into `search-query.schema.json` fields. Common semantics:
 
-- `最近` -> sort by `submitted_at` descending.
+- `最近` -> sort by `attempt_at` descending.
 - `做错` -> `result_bucket = INCORRECT`.
 - `没完全做对` -> `PARTIAL | INCORRECT | UNSOLVED`.
 - `曾经做错` -> match any historical Attempt with `INCORRECT`, not only the latest result.
@@ -23,7 +23,14 @@ Translate the user's wording into `search-query.schema.json` fields. Common sema
 - `用过提示` -> `hint_min = H1`.
 - an explicit number such as `2道` -> `limit = 2`.
 
-`Attempts` deliberately contains snapshots of domain, difficulty, concept/method tags, and search text. For recent-attempt queries, scan bounded chunks from the newest end of `Attempts`, filter there, and stop once enough matches are found. This avoids a full cross-table scan for common queries such as `最近做错的2道几何题`.
+`attempt_at` is the selected Attempt's `submitted_at` timestamp used for sorting.
+
+`Attempts` deliberately contains snapshots of domain, difficulty, concept/method tags, and search text. For recent-attempt queries, scan bounded chunks from the newest end of `Attempts`.
+
+- If `historical_result_match=false`, consider only the first (latest) Attempt encountered for each `problem_id`, then apply the requested filters. An older incorrect Attempt must not make a problem match if its latest Attempt is correct.
+- If `historical_result_match=true`, any historical Attempt may satisfy the filters. Deduplicate results by `problem_id` and rank each problem by its most recent matching Attempt.
+
+Stop once enough matching problem IDs are known. This avoids unnecessary full-table scans for common queries such as `最近做错的2道几何题` while preserving latest-versus-historical semantics.
 
 For semantic phrases such as `那道用了圆和相似、最后逻辑不严谨的题`, search controlled concept/method/error tags plus `search_text`, rank candidates, and return a short candidate list before loading a full note.
 
@@ -32,6 +39,7 @@ For semantic phrases such as `那道用了圆和相似、最后逻辑不严谨�
 For `重做 P000237`:
 
 1. Load statement and safe metadata.
-2. Create a new Attempt.
+2. Start a new transient active attempt with the next `attempt_no`, `hint_max=H0`, and `hint_count=0`. Do not write an incomplete durable `Attempts` row yet.
 3. Set H0 and `SOLUTION_LOCKED`.
 4. Do not show previous solution, key insight, error details that reveal the route, or prior hints until the new attempt is submitted.
+5. Materialize the durable `Attempts` row only when the student submits work or explicitly ends the attempt without a submission.

@@ -5,6 +5,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 REF = ROOT / "skills" / "imo-tutor" / "references"
+WORKFLOWS = ROOT / "skills" / "imo-tutor" / "workflows"
 
 
 class ContractTests(unittest.TestCase):
@@ -58,6 +59,84 @@ class ContractTests(unittest.TestCase):
         self.assertEqual(first["domains"], ["GEO"])
         self.assertEqual(first["result_buckets"], ["INCORRECT"])
         self.assertEqual(first["limit"], 2)
+
+    def test_retrieval_sort_keys_match_schema(self):
+        allowed = set(self.load_json("search-query.schema.json")["properties"]["sort_by"]["enum"])
+        retrieval = json.loads((ROOT / "evals" / "retrieval.json").read_text(encoding="utf-8"))
+        for case in retrieval["cases"]:
+            sort_by = case["expected"].get("sort_by")
+            if sort_by:
+                self.assertIn(sort_by, allowed)
+
+        lifecycle = json.loads((ROOT / "evals" / "lifecycle.json").read_text(encoding="utf-8"))
+        for case in lifecycle["cases"]:
+            for query in case.get("queries", []):
+                sort_by = query["structured"].get("sort_by")
+                if sort_by:
+                    self.assertIn(sort_by, allowed)
+
+    def test_retrieval_workflow_matches_contract(self):
+        workflow = (WORKFLOWS / "problem-retrieval.md").read_text(encoding="utf-8")
+        self.assertIn("`最近` -> sort by `attempt_at` descending.", workflow)
+        self.assertNotIn("sort by `submitted_at` descending", workflow)
+        self.assertIn("only the first (latest) Attempt encountered for each `problem_id`", workflow)
+        self.assertIn("`historical_result_match=true`", workflow)
+
+    def test_attempt_lifecycle_is_transient_until_finalized(self):
+        intake = (WORKFLOWS / "problem-intake.md").read_text(encoding="utf-8")
+        hints = (WORKFLOWS / "hint-manager.md").read_text(encoding="utf-8")
+        archive = (WORKFLOWS / "drive-archive.md").read_text(encoding="utf-8")
+        retrieval = (WORKFLOWS / "problem-retrieval.md").read_text(encoding="utf-8")
+
+        self.assertIn("transient active attempt", intake)
+        self.assertIn("transient active attempt", retrieval)
+        self.assertIn("Do not write an incomplete `Attempts` row", archive)
+        self.assertIn("verdict=UNSOLVED", hints)
+        self.assertIn("result_bucket=UNSOLVED", hints)
+        self.assertIn("If H6 caused the attempt to end, record `hint_max=H6`", archive)
+
+    def test_lifecycle_goldens(self):
+        data = json.loads((ROOT / "evals" / "lifecycle.json").read_text(encoding="utf-8"))
+        cases = {case["id"]: case for case in data["cases"]}
+
+        retrieval = cases["latest_vs_historical_results"]
+        attempts = retrieval["attempts"]
+
+        def matches(attempt, query):
+            domains = set(query.get("domains", []))
+            buckets = set(query.get("result_buckets", []))
+            return (not domains or attempt["primary_domain"] in domains) and (not buckets or attempt["result_bucket"] in buckets)
+
+        def select_problem_ids(query):
+            ordered = sorted(attempts, key=lambda row: row["submitted_at"], reverse=True)
+            selected = []
+            seen = set()
+            if query.get("historical_result_match", False):
+                for attempt in ordered:
+                    if attempt["problem_id"] in seen or not matches(attempt, query):
+                        continue
+                    seen.add(attempt["problem_id"])
+                    selected.append(attempt)
+            else:
+                latest = {}
+                for attempt in ordered:
+                    latest.setdefault(attempt["problem_id"], attempt)
+                selected = [attempt for attempt in latest.values() if matches(attempt, query)]
+                selected.sort(key=lambda row: row["submitted_at"], reverse=True)
+            return [row["problem_id"] for row in selected[: query.get("limit", 100)]]
+
+        for query_case in retrieval["queries"]:
+            self.assertEqual(select_problem_ids(query_case["structured"]), query_case["expected_problem_ids"])
+
+        give_up = cases["transient_attempt_hints_then_give_up"]
+        self.assertEqual(give_up["expect_before_end"]["durable_attempt_rows"], 0)
+        self.assertEqual(give_up["expect_after_end"]["verdict"], "UNSOLVED")
+        self.assertEqual(give_up["expect_after_end"]["result_bucket"], "UNSOLVED")
+
+        h6 = cases["h6_before_submission"]["expected"]
+        self.assertEqual(h6["verdict"], "UNSOLVED")
+        self.assertEqual(h6["result_bucket"], "UNSOLVED")
+        self.assertEqual(h6["hint_max"], "H6")
 
 
 if __name__ == "__main__":
