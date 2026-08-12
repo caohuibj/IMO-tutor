@@ -4,41 +4,81 @@
     {
       "id": "latest_vs_historical_results",
       "attempts": [
-        {"problem_id": "P000001", "primary_domain": "GEO", "submitted_at": "2026-08-10T10:00:00+08:00", "result_bucket": "INCORRECT"},
-        {"problem_id": "P000001", "primary_domain": "GEO", "submitted_at": "2026-08-11T10:00:00+08:00", "result_bucket": "CORRECT"},
-        {"problem_id": "P000002", "primary_domain": "GEO", "submitted_at": "2026-08-09T10:00:00+08:00", "result_bucket": "INCORRECT"},
-        {"problem_id": "P000003", "primary_domain": "GEO", "submitted_at": "2026-08-08T10:00:00+08:00", "result_bucket": "INCORRECT"}
+        {
+          "problem_id": "P000001",
+          "primary_domain": "GEO",
+          "submitted_at": "2026-08-10T10:00:00+08:00",
+          "result_bucket": "INCORRECT"
+        },
+        {
+          "problem_id": "P000001",
+          "primary_domain": "GEO",
+          "submitted_at": "2026-08-11T10:00:00+08:00",
+          "result_bucket": "CORRECT"
+        },
+        {
+          "problem_id": "P000002",
+          "primary_domain": "GEO",
+          "submitted_at": "2026-08-09T10:00:00+08:00",
+          "result_bucket": "INCORRECT"
+        },
+        {
+          "problem_id": "P000003",
+          "primary_domain": "GEO",
+          "submitted_at": "2026-08-08T10:00:00+08:00",
+          "result_bucket": "INCORRECT"
+        }
       ],
       "queries": [
         {
           "input": "最近做错的2道几何题",
           "structured": {
-            "domains": ["GEO"],
-            "result_buckets": ["INCORRECT"],
+            "domains": [
+              "GEO"
+            ],
+            "result_buckets": [
+              "INCORRECT"
+            ],
             "historical_result_match": false,
             "sort_by": "attempt_at",
             "sort_order": "desc",
             "limit": 2
           },
-          "expected_problem_ids": ["P000002", "P000003"]
+          "expected_problem_ids": [
+            "P000002",
+            "P000003"
+          ]
         },
         {
           "input": "找我曾经做错过的几何题",
           "structured": {
-            "domains": ["GEO"],
-            "result_buckets": ["INCORRECT"],
+            "domains": [
+              "GEO"
+            ],
+            "result_buckets": [
+              "INCORRECT"
+            ],
             "historical_result_match": true,
             "sort_by": "attempt_at",
             "sort_order": "desc",
             "limit": 10
           },
-          "expected_problem_ids": ["P000001", "P000002", "P000003"]
+          "expected_problem_ids": [
+            "P000001",
+            "P000002",
+            "P000003"
+          ]
         }
       ]
     },
     {
       "id": "transient_attempt_hints_then_give_up",
-      "events": ["new_problem", "request_H1", "request_H2", "give_up"],
+      "events": [
+        "new_problem",
+        "request_H1",
+        "request_H2",
+        "give_up"
+      ],
       "expect_before_end": {
         "durable_attempt_rows": 0,
         "hint_max": "H2",
@@ -53,12 +93,70 @@
     },
     {
       "id": "h6_before_submission",
-      "events": ["new_problem", "request_H6"],
+      "events": [
+        "new_problem",
+        "request_H6"
+      ],
       "expected": {
         "durable_attempt_rows": 1,
         "verdict": "UNSOLVED",
         "result_bucket": "UNSOLVED",
         "hint_max": "H6"
+      }
+    },
+    {
+      "id": "full_persistence_round_trip",
+      "events": [
+        "new_problem_image",
+        "analyze",
+        "submit_solution_image",
+        "review",
+        "compile_note",
+        "archive",
+        "readback"
+      ],
+      "expected": {
+        "problem_id": "P000004",
+        "attempt_id": "P000004-A01",
+        "problem_folder": "P000004",
+        "problem_image": "P000004-problem-01.jpg",
+        "solution_image": "P000004-A01-solution-01.jpg",
+        "note_name": "P000004 Note",
+        "problem_index_rows_created": 1,
+        "attempt_rows_created": 1,
+        "note_url_targets": [
+          "Problem_Index",
+          "Attempts"
+        ],
+        "final_status": "ARCHIVED",
+        "readback_required": true
+      }
+    },
+    {
+      "id": "redo_reuses_problem",
+      "existing": {
+        "problem_id": "P000005",
+        "attempt_count": 1,
+        "problem_index_rows": 1,
+        "attempt_rows": 1
+      },
+      "events": [
+        "redo",
+        "submit_solution_image",
+        "review",
+        "compile_note",
+        "archive"
+      ],
+      "expected": {
+        "problem_id": "P000005",
+        "attempt_no": 2,
+        "attempt_id": "P000005-A02",
+        "problem_index_rows_created": 0,
+        "total_problem_index_rows": 1,
+        "attempt_rows_created": 1,
+        "total_attempt_rows": 2,
+        "reuse_problem_folder": true,
+        "reuse_note": true
       }
     }
   ]
