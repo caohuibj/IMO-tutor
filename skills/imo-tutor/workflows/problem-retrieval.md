@@ -38,8 +38,10 @@ For semantic phrases such as `那道用了圆和相似、最后逻辑不严谨�
 
 For `重做 P000237`:
 
-1. Load statement and safe metadata.
-2. Start a new transient active attempt with the next `attempt_no`, `hint_max=H0`, and `hint_count=0`. Do not write an incomplete durable `Attempts` row yet.
-3. Set H0 and `SOLUTION_LOCKED`.
-4. Do not show previous solution, key insight, error details that reveal the route, or prior hints until the new attempt is submitted.
-5. Materialize the durable `Attempts` row only when the student submits work or explicitly ends the attempt without a submission.
+1. Load the existing `Problem_Index` row, statement, and safe metadata.
+2. Reuse the existing Problem folder and durable note. Do not append a new `Problem_Index` row.
+3. Start a transient active attempt with `attempt_no = attempt_count + 1` and `attempt_id = P000237-A<attempt_no:02d>`, `hint_max=H0`, and `hint_count=0`.
+4. Set H0 and `SOLUTION_LOCKED`.
+5. Do not show previous solution, key insight, error details that reveal the route, or prior hints until the new attempt is submitted.
+6. Materialize exactly one new durable `Attempts` row only when the student submits work or explicitly ends the attempt without a submission.
+7. After finalization, update the same `Problem_Index` row and the same `<problem_id> Note`.
