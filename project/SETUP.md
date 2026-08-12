@@ -2,23 +2,48 @@
 
 本文件面向第一次安装 IMO Tutor 的学生。目标不是理解内部 schema，而是机械完成安装并跑通第一道题。
 
-## 0. 准备
+## 0. Preflight：先确认当前 ChatGPT 环境受支持
 
-你需要：
+v1.0 不按 plan 名称猜测能力，而是按实际可用功能判断。继续安装前，确认以下全部成立：
 
-- 一个可以创建 ChatGPT Project 并安装 Skill 的 ChatGPT 环境；
-- 一个自己的 Google Drive；
-- GitHub Release 中的 `imo-tutor-v<version>.zip`；
-- 本仓库的 `project/PROJECT_INSTRUCTIONS.md`。
+- ChatGPT 中可以进入 `Plugins → Skills`；
+- `Skills → Create` 中存在 `Upload from your computer`；
+- 你的 workspace 允许 Skill upload / install；
+- 可以创建 ChatGPT Project；
+- 可以连接 Google Drive app；
+- Google Drive / Docs / Sheets 的写操作可用，你有权限创建和更新自己的 Drive 文件与 Google Sheet。
 
-所有学习数据都保存在你自己的 Google Drive / Google Sheets 中，不需要共享给项目作者。
+如果缺少任一项，停止安装；当前环境不属于 IMO Tutor v1.0 的支持范围。Personal Skills 和 Google app actions 的可用性会受到 ChatGPT plan、workspace admin 配置和 OAuth scope 的影响，应以当前 ChatGPT 界面为准。
 
-## 1. 安装 Skill
+## 1. 下载 Release 资产
 
-1. 打开最新的 GitHub Release。
-2. 下载 `imo-tutor-v<version>.zip`。
-3. 将这个 zip 作为一个 ChatGPT Skill 安装；不要重新打包内部文件。
-4. 确认安装后的 Skill 名称为 `imo-tutor`。
+打开最新的 GitHub Release，下载：
+
+```text
+imo-tutor-v<version>.zip
+Problem_Index.csv
+Attempts.csv
+PROJECT_INSTRUCTIONS.md
+```
+
+Release 还会附带：
+
+```text
+SETUP.md
+PROJECT_GUIDE.md
+USER_GUIDE.md
+```
+
+不需要 clone 仓库，也不要自己从仓库中挑文件重新打包。
+
+## 2. 安装 Skill
+
+1. 在 ChatGPT sidebar 进入 `Plugins`。
+2. 打开 `Skills`。
+3. 选择 `Create`。
+4. 选择 `Upload from your computer`。
+5. 上传 `imo-tutor-v<version>.zip`。
+6. 等待扫描完成，并确认 Skill 可用。
 
 Release zip 的预期结构是：
 
@@ -29,18 +54,22 @@ imo-tutor/
 └── references/
 ```
 
-## 2. 创建 ChatGPT Project
+如果你在不同 ChatGPT surface 之间切换，例如 desktop 与 web/mobile，请在实际要使用 IMO Tutor 的 surface 上确认该 Skill 已安装可用。
+
+## 3. 创建 ChatGPT Project
 
 1. 创建一个新的 ChatGPT Project，推荐名称：`IMO Tutor`。
-2. 打开 `project/PROJECT_INSTRUCTIONS.md`。
+2. 打开 Release 中的 `PROJECT_INSTRUCTIONS.md`。
 3. 将其完整复制到该 Project 的 Project Instructions。
-4. 确认 Project 中可以使用刚安装的 `imo-tutor` Skill。
+4. 确认该 Project 中可以正常调用已安装的 `imo-tutor` Skill。
+
+Skill 是当前 ChatGPT account/workspace/surface 的能力，不是每个 Project 内单独安装一次。Project 只需要配置自己的 Project Instructions 和数据连接。
 
 不要把学生个人解答、Drive ID 或 credentials 写入 Project Instructions。
 
-## 3. 连接 Google Drive
+## 4. 连接 Google Drive
 
-连接你自己的 Google Drive app / connector。
+连接你自己的 Google Drive app，并确认写操作可用。
 
 在 Drive 中创建：
 
@@ -61,13 +90,15 @@ Problem_Index
 Attempts
 ```
 
-## 4. 初始化 Learning DB
+如果 ChatGPT 可以读取 Drive 但不能创建/更新 Drive 文件或 Sheet，请先解决权限/OAuth/workspace action 配置；只读连接不足以运行 IMO Tutor 持久化闭环。
 
-不要自己设计列名。直接使用 Skill 中的两个 CSV header：
+## 5. 初始化 Learning DB
+
+不要自己设计列名。直接使用 Release 中的两个 CSV：
 
 ```text
-skills/imo-tutor/references/Problem_Index.csv
-skills/imo-tutor/references/Attempts.csv
+Problem_Index.csv
+Attempts.csv
 ```
 
 分别把：
@@ -87,9 +118,9 @@ Google Drive
     └── Attempts
 ```
 
-## 5. 建立推荐的 Project 对话
+## 6. 建立并 Pin 两个长期通用 Chat
 
-在 IMO Tutor Project 中建立并长期保留两个通用 Chat：
+在 IMO Tutor Project 中建立两个通用 Chat：
 
 ### `00｜使用说明`
 
@@ -120,11 +151,13 @@ P00237
 重做 P00237
 ```
 
-这两个通用 Chat 保持不归档，便于长期从 Project chat list / sidebar 找到。不要再创建长期的“新题”“批改”“Hints”通用 Chat；这些状态都应该留在具体题目的工作 Chat 中。
+创建后将 `00｜使用说明` 与 `01｜题库检索` **Pin 到 sidebar**，并保持不归档。Web 上可在 sidebar 对话的 `⋯` 菜单选择 `Pin chat`；移动端可长按对话后选择 `Pin chat`。
 
-详细信息见 `project/PROJECT_GUIDE.md`。
+不要再创建长期的“新题”“批改”“Hints”通用 Chat；这些状态都应该留在具体题目的工作 Chat 中。
 
-## 6. 第一题 integration test
+详细信息见 `PROJECT_GUIDE.md`。
+
+## 7. 第一题 integration test
 
 新建一个**新的工作 Chat**，不要使用 `00｜使用说明` 或 `01｜题库检索`。
 
@@ -159,9 +192,9 @@ P00237
 4. 确认 `Problem_Index.status = ARCHIVED`。
 5. 只有这些 durable records readback 成功后，才归档该工作 Chat。
 
-## 7. 新 Chat 检索测试
+## 8. 新 Chat 检索测试
 
-归档第一题 Chat 后，进入长期保留的 `01｜题库检索`，输入：
+归档第一题 Chat 后，进入 Pin 的 `01｜题库检索`，输入：
 
 ```text
 P000001
@@ -177,7 +210,7 @@ P000001
 
 如果这道题满足条件，应能返回 `P000001`。
 
-## 8. 重做测试
+## 9. 重做测试
 
 新建一个新的工作 Chat，输入：
 
@@ -197,38 +230,39 @@ P000001
 
 完成后再次归档该工作 Chat。
 
-## 9. Setup 完成标准
+## 10. Setup 完成标准
 
 以下全部成立才算安装完成：
 
 ```text
-Skill ready
+Skill upload/install available
 Project Instructions ready
-Google Drive connected
+Google Drive write actions available
 IMO Tutor Data exists
 IMO Learning DB exists
 Problem_Index + Attempts initialized
-00｜使用说明 exists
-01｜题库检索 exists
+00｜使用说明 pinned
+01｜题库检索 pinned
 first problem archived
 new-chat retrieval works
 redo creates A02 without duplicate Problem
 ```
 
-## 10. 迁移到新的 ChatGPT Project
+## 11. 迁移到新的 ChatGPT Project
 
 IMO Tutor 的长期数据在 Google Drive / Sheets，不在旧 Chat。
 
 迁移时：
 
-1. 在新的 ChatGPT Project 安装相同或更新版本的 `imo-tutor` Skill；
-2. 复制 `PROJECT_INSTRUCTIONS.md`；
-3. 连接能够访问原 `IMO Tutor Data` 和 `IMO Learning DB` 的同一个 Google Drive；
+1. 在目标 ChatGPT account/workspace/surface 中确认相同或更新版本的 `imo-tutor` Skill 已安装可用；不要把 Skill 当作 Project 内部文件重复安装；
+2. 创建新的 ChatGPT Project，并复制 `PROJECT_INSTRUCTIONS.md`；
+3. 连接能够访问原 `IMO Tutor Data` 和 `IMO Learning DB` 的同一个 Google Drive，并确认写操作可用；
 4. 不要新建第二份同名数据库，除非你明确希望开始一套新数据；
-5. 在新 Project 的 `01｜题库检索` 中输入一个已有 `Pxxxxx` 验证 readback；
-6. 成功后即可继续使用，旧工作 Chat 不需要迁移。
+5. 在新 Project 中重新建立并 Pin `00｜使用说明`、`01｜题库检索`；
+6. 在 `01｜题库检索` 中输入一个已有 `Pxxxxx` 验证 readback；
+7. 成功后即可继续使用，旧工作 Chat 不需要迁移。
 
-## 11. 数据与隐私
+## 12. 数据与隐私
 
 - 每个学生只使用自己的私有 Drive 数据库。
 - 不要把 credentials、private Drive IDs 或个人解答提交到公共 GitHub 仓库。
