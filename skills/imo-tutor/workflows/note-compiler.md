@@ -2,6 +2,10 @@
 
 Compile the durable human-readable note for a problem.
 
+## Storage
+
+Maintain exactly one native Google Doc named `<problem_id> Note` inside the Problem folder. Later Attempts update the same note. Markdown/LaTeX is the content convention; v0.2 does not create parallel `.md`, transcription, review, or JSON files.
+
 ## Required sections
 
 1. Problem metadata: ID, source, date, domain, difficulty.
@@ -16,3 +20,5 @@ Compile the durable human-readable note for a problem.
 10. `Next time I see this`: one compact retrieval cue for future transfer.
 
 The note is for reading; structured fields remain in Sheets. Do not duplicate every database column as prose.
+
+After create/update, read the note back before its URL is used to archive the Problem. Write the observed `note_url` back to `Problem_Index` and the relevant finalized `Attempts` rows.
