@@ -40,14 +40,15 @@ class ContractTests(unittest.TestCase):
         full = [f"{category}.{item}" for category, items in errors.items() for item in items]
         self.assertEqual(len(full), len(set(full)))
 
-    def test_sheet_headers_contain_primary_keys(self):
+    def test_sheet_headers_contain_retrieval_fields(self):
         with (REF / "Problem_Index.csv").open(encoding="utf-8", newline="") as f:
-            headers = next(csv.reader(f))
-        self.assertIn("problem_id", headers)
+            problem_headers = next(csv.reader(f))
+        self.assertIn("problem_id", problem_headers)
+
         with (REF / "Attempts.csv").open(encoding="utf-8", newline="") as f:
-            headers = next(csv.reader(f))
-        self.assertIn("attempt_id", headers)
-        self.assertIn("problem_id", headers)
+            attempt_headers = next(csv.reader(f))
+        for field in ["attempt_id", "problem_id", "primary_domain", "difficulty_rating", "result_bucket", "submitted_at", "search_text"]:
+            self.assertIn(field, attempt_headers)
 
     def test_retrieval_goldens_parse(self):
         path = ROOT / "evals" / "retrieval.json"
