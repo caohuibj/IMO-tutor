@@ -1,0 +1,12 @@
+# Local/private configuration
+.env
+config.local.*
+secrets/
+student-data/
+
+# Python
+__pycache__/
+*.pyc
+
+# Generated packages
+dist/

@@ -1,0 +1,14 @@
+{
+  "name": "IMO Tutor",
+  "version": "0.1.0-alpha.1",
+  "skill_path": "skills/imo-tutor",
+  "project_instructions": "project/PROJECT_INSTRUCTIONS.md",
+  "storage": {
+    "provider": "google_drive",
+    "index": "google_sheets",
+    "default_root_folder": "IMO Tutor Data",
+    "default_index_file": "IMO Learning DB"
+  },
+  "data_contract_version": 1,
+  "taxonomy_version": 1
+}

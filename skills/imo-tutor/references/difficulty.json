@@ -1,0 +1,22 @@
+{
+  "name": "AoPS-style competition difficulty",
+  "scale_min": 1.0,
+  "scale_max": 10.0,
+  "increment": 0.5,
+  "imo_baselines": {
+    "P1_P4": {"rating": 6.5},
+    "P2_P5": {"range": [7.5, 8.0]},
+    "P3_P6": {"rating": 9.5}
+  },
+  "shortlist_baselines": {
+    "SL1_2": {"range": [5.5, 7.0]},
+    "SL3_4": {"range": [7.0, 8.0]},
+    "SL5_PLUS": {"range": [8.0, 10.0]}
+  },
+  "principles": [
+    "Rate problem-solving discovery and proof difficulty, not merely prerequisite sophistication.",
+    "Official problem position is a prior, not a hard constraint.",
+    "Student performance must not change global difficulty.",
+    "Use 0.5 increments and avoid false precision."
+  ]
+}

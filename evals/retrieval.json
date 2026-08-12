@@ -1,0 +1,35 @@
+{
+  "name": "retrieval parsing evals",
+  "cases": [
+    {
+      "input": "最近做错的2道几何题",
+      "expected": {
+        "domains": ["GEO"],
+        "result_buckets": ["INCORRECT"],
+        "historical_result_match": false,
+        "sort_by": "attempt_at",
+        "sort_order": "desc",
+        "limit": 2
+      }
+    },
+    {
+      "input": "最近没完全做对的3道难度8以上数论题",
+      "expected": {
+        "domains": ["NT"],
+        "difficulty_gte": 8.0,
+        "result_buckets": ["PARTIAL", "INCORRECT", "UNSOLVED"],
+        "sort_by": "attempt_at",
+        "sort_order": "desc",
+        "limit": 3
+      }
+    },
+    {
+      "input": "找我曾经做错过的几何题",
+      "expected": {
+        "domains": ["GEO"],
+        "result_buckets": ["INCORRECT"],
+        "historical_result_match": true
+      }
+    }
+  ]
+}

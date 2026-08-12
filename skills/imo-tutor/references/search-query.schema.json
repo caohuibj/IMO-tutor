@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IMO Tutor Retrieval Query",
+  "type": "object",
+  "properties": {
+    "problem_id": {"type": ["string", "null"]},
+    "domains": {"type": "array", "items": {"enum": ["ALG", "CMB", "GEO", "NT"]}},
+    "difficulty_gte": {"type": ["number", "null"]},
+    "difficulty_lte": {"type": ["number", "null"]},
+    "result_buckets": {"type": "array", "items": {"enum": ["CORRECT", "PARTIAL", "INCORRECT", "UNSOLVED"]}},
+    "historical_result_match": {"type": "boolean"},
+    "hint_min": {"type": ["string", "null"]},
+    "concept_tags": {"type": "array", "items": {"type": "string"}},
+    "method_tags": {"type": "array", "items": {"type": "string"}},
+    "error_tags": {"type": "array", "items": {"type": "string"}},
+    "keywords": {"type": "array", "items": {"type": "string"}},
+    "date_from": {"type": ["string", "null"]},
+    "date_to": {"type": ["string", "null"]},
+    "sort_by": {"enum": ["attempt_at", "difficulty", "problem_id", "relevance"]},
+    "sort_order": {"enum": ["asc", "desc"]},
+    "limit": {"type": "integer", "minimum": 1, "maximum": 100}
+  }
+}
