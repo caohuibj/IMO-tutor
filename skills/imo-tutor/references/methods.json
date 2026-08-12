@@ -1,0 +1,6 @@
+{
+  "ALG": ["M.ALG.Cauchy", "M.ALG.AMGM", "M.ALG.Jensen", "M.ALG.Smoothing", "M.ALG.UVW", "M.ALG.Substitution", "M.ALG.Factorization", "M.ALG.RootAnalysis", "M.ALG.Induction", "M.ALG.Interpolation"],
+  "CMB": ["M.CMB.Pigeonhole", "M.CMB.DoubleCounting", "M.CMB.Invariant", "M.CMB.Monovariant", "M.CMB.ExtremalPrinciple", "M.CMB.GraphModel", "M.CMB.Induction", "M.CMB.Bijection", "M.CMB.Construction"],
+  "GEO": ["M.GEO.AngleChasing", "M.GEO.SimilarTriangles", "M.GEO.PowerOfPoint", "M.GEO.RadicalAxis", "M.GEO.AuxiliaryCircle", "M.GEO.Reflection", "M.GEO.Rotation", "M.GEO.Homothety", "M.GEO.Inversion", "M.GEO.Coordinates", "M.GEO.ComplexNumbers", "M.GEO.Trigonometry", "M.GEO.Barycentric", "M.GEO.Projective"],
+  "NT": ["M.NT.ModularArithmetic", "M.NT.Factorization", "M.NT.Valuation", "M.NT.LTE", "M.NT.InfiniteDescent", "M.NT.Extremal", "M.NT.Pigeonhole", "M.NT.VietaJumping", "M.NT.Order", "M.NT.CRT", "M.NT.Bezout"]
+}

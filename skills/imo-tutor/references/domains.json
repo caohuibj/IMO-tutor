@@ -1,0 +1,8 @@
+{
+  "domains": {
+    "ALG": "Algebra",
+    "CMB": "Combinatorics",
+    "GEO": "Geometry",
+    "NT": "Number Theory"
+  }
+}

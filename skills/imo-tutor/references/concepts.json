@@ -1,0 +1,6 @@
+{
+  "ALG": ["ALG.Inequality", "ALG.Polynomial", "ALG.FunctionalEquation", "ALG.Sequence", "ALG.Recurrence", "ALG.SymmetricExpression", "ALG.HomogeneousExpression", "ALG.Roots"],
+  "CMB": ["CMB.Counting", "CMB.Graph", "CMB.Coloring", "CMB.Pigeonhole", "CMB.Invariant", "CMB.Game", "CMB.ExtremalStructure", "CMB.Permutation", "CMB.SetSystem", "CMB.DoubleCounting"],
+  "GEO": ["GEO.Triangle", "GEO.Circle", "GEO.CyclicQuadrilateral", "GEO.Similarity", "GEO.Congruence", "GEO.Angle", "GEO.Tangent", "GEO.PowerOfPoint", "GEO.RadicalAxis", "GEO.Cevian", "GEO.Orthocenter", "GEO.Incenter", "GEO.Circumcenter", "GEO.HarmonicDivision", "GEO.Projective"],
+  "NT": ["NT.Divisibility", "NT.GCD", "NT.Congruence", "NT.Prime", "NT.Valuation", "NT.Diophantine", "NT.QuadraticResidue", "NT.OrderModulo", "NT.ArithmeticFunction", "NT.Factorization"]
+}

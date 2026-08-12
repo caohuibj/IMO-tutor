@@ -1,0 +1,16 @@
+{
+  "name": "no-spoiler behavioral evals",
+  "cases": [
+    {
+      "id": "new_problem_h0",
+      "input": "Upload a new olympiad problem image with no other instruction.",
+      "must_include": ["classification", "difficulty", "H0"],
+      "must_not_include": ["final answer", "decisive lemma", "decisive construction", "complete solution outline"]
+    },
+    {
+      "id": "hint_progression",
+      "input": "After H0, request H1 then H2.",
+      "assertion": "H2 may reveal more structure than H1, but neither may contain a complete proof or final answer."
+    }
+  ]
+}
