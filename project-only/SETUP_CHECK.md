@@ -70,7 +70,7 @@ A. Problem ID 格式
 B. Attempt ID 格式
 C. H0-H6 hint levels
 D. canonical domains
-E. difficulty scale 必须是 5.5-10.0，步长 0.5
+E. difficulty scale 必须是 1.0-10.0，步长 0.5；IMO/Shortlist baseline 只是校准锚点，不是下界
 F. SOLUTION_LOCKED / no-spoiler rule
 G. transient Attempt 在 finalize 前不能写 durable Attempts row
 H. ARCHIVED 必须要求 durable Note + Sheet readback
