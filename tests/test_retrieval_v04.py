@@ -16,6 +16,13 @@ def normalize_problem_id(raw):
     return f"P{int(match.group(1)):06d}"
 
 
+def classify_retrieval_action(raw):
+    text = raw.strip()
+    if text.startswith("重做 "):
+        return "redo", normalize_problem_id(text.split()[-1])
+    return "exact", normalize_problem_id(text)
+
+
 def error_matches(actual_tags, requested):
     for requested_tag in requested:
         if requested_tag.endswith(".*"):
@@ -88,6 +95,15 @@ class RetrievalV04Tests(unittest.TestCase):
         pattern = re.compile(schema["properties"]["problem_id"]["pattern"])
         self.assertRegex("P000237", pattern)
         self.assertNotRegex("P00237", pattern)
+
+    def test_redo_intent_precedes_exact_lookup(self):
+        action, problem_id = classify_retrieval_action("重做 P00237")
+        self.assertEqual(action, "redo")
+        self.assertEqual(problem_id, "P000237")
+
+        workflow = (WORKFLOWS / "problem-retrieval.md").read_text(encoding="utf-8")
+        self.assertIn("Redo intent takes precedence over exact lookup", workflow)
+        self.assertIn("do not load `note_url` content or old `Attempts` before the new Attempt is finalized", workflow)
 
     def test_retrieval_examples_parse_to_structured_fields(self):
         data = self.load_json(EVALS / "retrieval.json")
