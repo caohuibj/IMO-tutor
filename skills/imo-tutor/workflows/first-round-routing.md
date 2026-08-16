@@ -20,7 +20,7 @@ There are two independent persistence domains inside the same Project-based runt
 - `FULL_EXAM` is an input classification only. A later workflow may split one complete 8+3 paper into one `FILL_SET` and one `CALC_SET` durable record.
 - First-round Review / reflection belongs to the first-round subsystem.
 - Do not create proof-system Problem or Attempt identities for first-round work.
-- Do not apply proof-system H0-H6 / `SOLUTION_LOCKED` merely because the work is mathematical. First-round coaching and grading rules are defined by first-round workflows.
+- Do not apply H0-H6 or `SOLUTION_LOCKED` to first-round work merely because it is mathematical. First-round coaching and grading rules are defined by first-round workflows.
 
 ### Existing proof / second-round system
 
