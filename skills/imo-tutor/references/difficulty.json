@@ -15,6 +15,7 @@
   },
   "principles": [
     "Rate problem-solving discovery and proof difficulty, not merely prerequisite sophistication.",
+    "The 1.0-10.0 scale also covers easier olympiad and first-round problems below Shortlist baselines; IMO/Shortlist positions are calibration anchors, not a lower bound.",
     "Official problem position is a prior, not a hard constraint.",
     "Student performance must not change global difficulty.",
     "Use 0.5 increments and avoid false precision."

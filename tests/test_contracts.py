@@ -21,11 +21,25 @@ class ContractTests(unittest.TestCase):
 
     def test_difficulty_scale(self):
         cfg = self.load_json("difficulty.json")
+        self.assertEqual(cfg["scale_min"], 1.0)
+        self.assertEqual(cfg["scale_max"], 10.0)
         self.assertEqual(cfg["increment"], 0.5)
-        for value in [5.5, 6.5, 7.5, 8.0, 9.5, 10.0]:
+        for value in [1.0, 3.0, 5.5, 6.5, 7.5, 8.0, 9.5, 10.0]:
             self.assertEqual((value * 2) % 1, 0)
             self.assertGreaterEqual(value, cfg["scale_min"])
             self.assertLessEqual(value, cfg["scale_max"])
+
+        problem = self.load_json("problem.schema.json")["properties"]
+        attempt = self.load_json("attempt.schema.json")["properties"]
+        self.assertEqual(problem["difficulty_rating"]["minimum"], cfg["scale_min"])
+        self.assertEqual(problem["difficulty_rating"]["maximum"], cfg["scale_max"])
+        self.assertEqual(problem["difficulty_rating"]["multipleOf"], cfg["increment"])
+        self.assertEqual(problem["difficulty_range"]["items"]["minimum"], cfg["scale_min"])
+        self.assertEqual(problem["difficulty_range"]["items"]["maximum"], cfg["scale_max"])
+        self.assertEqual(problem["difficulty_range"]["items"]["multipleOf"], cfg["increment"])
+        self.assertEqual(attempt["difficulty_rating"]["minimum"], cfg["scale_min"])
+        self.assertEqual(attempt["difficulty_rating"]["maximum"], cfg["scale_max"])
+        self.assertEqual(attempt["difficulty_rating"]["multipleOf"], cfg["increment"])
 
     def test_domains_are_canonical(self):
         domains = self.load_json("domains.json")["domains"]
@@ -51,6 +65,12 @@ class ContractTests(unittest.TestCase):
             attempt_headers = next(csv.reader(f))
         for field in ["attempt_id", "problem_id", "primary_domain", "difficulty_rating", "result_bucket", "submitted_at", "search_text"]:
             self.assertIn(field, attempt_headers)
+
+    def test_sheet_array_serialization_is_canonical(self):
+        archive = (WORKFLOWS / "drive-archive.md").read_text(encoding="utf-8")
+        self.assertIn("CSV templates are setup assets and are not required as Project runtime sources", archive)
+        self.assertIn("Serialize every array-valued field in Sheet cells as a compact JSON array", archive)
+        self.assertNotIn("delimiter-separated IDs or JSON strings", archive)
 
     def test_id_contracts(self):
         problem_pattern = self.load_json("problem.schema.json")["properties"]["problem_id"]["pattern"]
