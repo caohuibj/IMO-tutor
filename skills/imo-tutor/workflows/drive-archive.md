@@ -108,9 +108,8 @@ Archive in this order:
 
 ## Data behavior
 
-- Use the exact columns defined by `problem.schema.json` / `attempt.schema.json` and present in the initialized Sheet headers. CSV templates are setup assets and are not required as Project runtime sources.
-- Serialize every array-valued field in Sheet cells as a compact JSON array, for example `["GEO.Circle","GEO.Tangent"]`. Do not switch between delimiter-separated and JSON encodings across chats or rows.
-- Store only controlled tag IDs; do not invent alternate spellings.
+- Use the exact columns in the bundled CSV templates.
+- Store controlled tags as delimiter-separated IDs or JSON strings consistently; do not invent alternate spellings.
 - Do not place image bytes in Sheet cells. Store Drive URLs/IDs and image archive status.
 - Do not claim an original image has been archived unless the Drive upload actually succeeded.
 - Prefer the shortest successful connector sequence; do not add speculative retry systems or alternate storage paths.
