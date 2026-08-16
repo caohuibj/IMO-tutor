@@ -14,6 +14,7 @@ RUNTIME_FILES = [
     "workflows/note-compiler.md",
     "workflows/drive-archive.md",
     "workflows/problem-retrieval.md",
+    "workflows/first-round-routing.md",
     "references/difficulty.json",
     "references/domains.json",
     "references/errors.json",
@@ -27,8 +28,8 @@ RUNTIME_FILES = [
 
 
 class ProjectOnlyContractTests(unittest.TestCase):
-    def test_runtime_upload_manifest_has_exactly_17_existing_files(self):
-        self.assertEqual(len(RUNTIME_FILES), 17)
+    def test_runtime_upload_manifest_has_exactly_18_existing_files(self):
+        self.assertEqual(len(RUNTIME_FILES), 18)
         self.assertEqual(len(RUNTIME_FILES), len(set(RUNTIME_FILES)))
         for relative in RUNTIME_FILES:
             self.assertTrue((SKILL / relative).is_file(), relative)
@@ -54,8 +55,28 @@ class ProjectOnlyContractTests(unittest.TestCase):
             "IMO Tutor Data",
             "IMO Learning DB",
             "one student's private learning database",
+            "first-round-routing.md",
+            "Notion",
+            "explicit first-round intent overrides implicit prior chat state",
+            "never allocate `Pxxxxxx`",
+            "never write `Problem_Index` or `Attempts`",
         ]:
             self.assertIn(required, instructions)
+
+    def test_first_round_routing_contract_is_isolated(self):
+        routing = (SKILL / "workflows" / "first-round-routing.md").read_text(encoding="utf-8")
+        for required in [
+            "FILL_SET",
+            "CALC_SET",
+            "PRACTICE",
+            "FULL_EXAM",
+            "Explicit first-round intent wins over implicit chat state",
+            "never allocate a `Pxxxxxx` Problem ID",
+            "never read or write `Problem_Index` for first-round persistence",
+            "do not fall back to Google Drive or Google Sheets",
+            "Durable source of truth: **Notion**",
+        ]:
+            self.assertIn(required, routing)
 
     def test_setup_check_covers_all_runtime_files_and_hard_contracts(self):
         setup = (PROJECT_ONLY / "SETUP_CHECK.md").read_text(encoding="utf-8")
@@ -71,6 +92,11 @@ class ProjectOnlyContractTests(unittest.TestCase):
             "Attempts header parity",
             "Project-only memory",
             "Installed imo-tutor Skill absent",
+            "First-round routing",
+            "First-round isolation",
+            "Routing precedence",
+            "Persistence split",
+            "FILES FOUND: n/18",
         ]:
             self.assertIn(required, setup)
 

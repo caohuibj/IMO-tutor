@@ -2,7 +2,7 @@
 
 Use this file to configure and validate a clean ChatGPT Project without installing the `imo-tutor` Skill.
 
-## Runtime upload list — exactly 17 Project files
+## Runtime upload list — exactly 18 Project files
 
 ### Workflows
 
@@ -14,22 +14,25 @@ Use this file to configure and validate a clean ChatGPT Project without installi
 6. `note-compiler.md`
 7. `drive-archive.md`
 8. `problem-retrieval.md`
+9. `first-round-routing.md`
 
 ### References
 
-9. `difficulty.json`
-10. `domains.json`
-11. `errors.json`
-12. `concepts.json`
-13. `methods.json`
-14. `problem.schema.json`
-15. `attempt.schema.json`
-16. `search-query.schema.json`
-17. `math-note-template.md`
+10. `difficulty.json`
+11. `domains.json`
+12. `errors.json`
+13. `concepts.json`
+14. `methods.json`
+15. `problem.schema.json`
+16. `attempt.schema.json`
+17. `search-query.schema.json`
+18. `math-note-template.md`
 
 `Problem_Index.csv` and `Attempts.csv` are setup assets for initializing Google Sheets headers. They are not required as Project runtime sources.
 
 Copy the full contents of `project-only/PROJECT_INSTRUCTIONS.md` into the ChatGPT Project Instructions field.
+
+PR1 adds only first-round routing/isolation. The Notion database schema and Notion storage self-check are deferred to the later persistence PR. Until then, first-round work must never fall back to the second-round Drive / Sheets database.
 
 ## Static Project self-check prompt
 
@@ -42,11 +45,12 @@ Run this in a temporary Chat inside the Project before connecting durable studen
 不要创建 Problem。
 不要创建 Attempt。
 不要修改 Google Drive。
+不要修改 Notion。
 不要根据记忆猜测缺失文件。
 
 请实际检查当前 Project sources，并逐个读取，而不是只根据文件名推断。
 
-必须存在以下 17 个 runtime 文件：
+必须存在以下 18 个 runtime 文件：
 problem-intake.md
 no-spoiler-analysis.md
 hint-manager.md
@@ -55,6 +59,7 @@ solution-compare.md
 note-compiler.md
 drive-archive.md
 problem-retrieval.md
+first-round-routing.md
 difficulty.json
 domains.json
 errors.json
@@ -78,11 +83,15 @@ I. exact/fuzzy retrieval 的基本路由
 J. Redo 必须复用 Problem 并创建下一 Attempt
 K. Redo finalize 前禁止读取旧 Attempt solution information
 L. Sheet 中 array-valued fields 必须使用 compact JSON array 序列化
+M. first-round routing：明确的一试请求必须读取 first-round-routing.md
+N. first-round isolation：一试不得分配 Pxxxxxx / Attempt ID，不得写 Problem_Index / Attempts，不得创建二试 Drive Problem folder
+O. routing precedence：显式 Pxxxxxx/Redo 归二试；显式一试意图优先于旧 Chat 中隐式 active Attempt；未显式切换的一般 hint follow-up 仍归当前二试 Attempt
+P. persistence split：二试 durable source = Google Drive / Sheets；一试 durable source = Notion；两者不得互相 fallback
 
 最后只输出一个安装报告：
 
 PROJECT FILES: PASS / FAIL
-FILES FOUND: n/17
+FILES FOUND: n/18
 
 CONTRACTS:
 Problem ID: PASS/FAIL
@@ -97,10 +106,15 @@ Retrieval: PASS/FAIL
 Redo: PASS/FAIL
 Redo isolation: PASS/FAIL
 Sheet array serialization: PASS/FAIL
+First-round routing: PASS/FAIL
+First-round isolation: PASS/FAIL
+Routing precedence: PASS/FAIL
+Persistence split: PASS/FAIL
 
 UI-ONLY CHECKS:
 Project-only memory: UNKNOWN unless you can directly verify it
 Installed imo-tutor Skill absent: UNKNOWN unless you can directly verify it
+Notion connection: UNKNOWN unless you can directly verify it
 
 FINAL:
 READY / NOT READY
@@ -108,16 +122,17 @@ READY / NOT READY
 对于无法直接验证的内容必须写 UNKNOWN，禁止为了让安装通过而猜测 PASS。
 ```
 
-## Storage self-check prompt
+## Existing proof / second-round storage self-check prompt
 
 After connecting Google Drive and initializing the Sheet headers from `Problem_Index.csv` and `Attempts.csv`, run:
 
 ```text
-继续 IMO Tutor Project-only 安装自检。
+继续 IMO Tutor Project-only 二试存储自检。
 
 这不是正式题目。
 不要创建 Problem 或 Attempt。
 不要向 Problem_Index 或 Attempts 写正式数据。
+不要写入 Notion。
 
 请使用 Google Drive / Sheets 实际完成以下检查：
 
@@ -158,4 +173,5 @@ The model must not guess these. Confirm manually before formal testing:
 
 - the new Project was created with Project-only memory when that option is available;
 - the `imo-tutor` Personal Skill is not participating in this Project-only test;
+- Notion is connected before PR2 persistence validation;
 - `00｜使用说明` and `01｜题库检索` are created only after setup checks pass.
