@@ -19,7 +19,7 @@ Google Sheets: IMO Learning DB
 
 同一个工作 Chat 不要连续处理多道正式题目。每道新题和每次正式 redo 都使用独立工作 Chat。
 
-### `此题完成` 是正常 Attempt 的唯一完成触发器
+### 完成即归档：`此题完成` 是正常 Attempt 的唯一完成触发器
 
 照片、文字、补页都只是 checkpoint。只有学生明确发送 `此题完成`，才 finalize 正常 Attempt 并运行完整六模块反馈。Give-up/H6 可结束 Attempt，但不会激活 Modules 2–6。
 
