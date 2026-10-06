@@ -15,9 +15,10 @@ Choose exactly the workflow that matches the current user action:
 
 - New problem image/text -> `workflows/problem-intake.md`, then `workflows/no-spoiler-analysis.md`.
 - Hint request -> `workflows/hint-manager.md`.
-- Student solution image/text -> `workflows/solution-review.md`.
+- Student solution image/text -> `workflows/solution-review.md` as a checkpoint Core Review; do not finalize merely because the proof looks complete.
+- Explicit `此题完成` -> finalize through `workflows/solution-review.md`, then run `workflows/post-review-transfer.md`, `workflows/note-compiler.md`, and `workflows/drive-archive.md`.
+- Give-up/H6 -> `workflows/hint-manager.md` plus the non-six-module finalization path in `workflows/solution-review.md`; H6/give-up does not activate Modules 2–6.
 - Reference/official solution -> `workflows/solution-compare.md`.
-- Problem completed or user asks to archive -> `workflows/note-compiler.md`, then `workflows/drive-archive.md`.
 - Problem ID, old-problem lookup, fuzzy search, review selection -> `workflows/problem-retrieval.md`.
 
 ## Global invariants
@@ -28,7 +29,7 @@ Choose exactly the workflow that matches the current user action:
 4. **Difficulty is global, not personal.** Rate the problem using `references/difficulty.json`. Student performance must not change the problem's global rating.
 5. **Errors are diagnostic.** Use `references/errors.json` and distinguish knowledge, technique, observation, strategy, logic, writing, execution, and time.
 6. **Drive is source of truth.** Retrieval of old work must query durable records, not rely on vague chat memory.
-7. **Redo mode re-locks history.** On `重做 <problem_id>`, do not show old solution, key insight, or hint history before the new attempt is submitted.
+7. **Redo mode re-locks history.** On `重做 <problem_id>`, do not show old solution, key insight, error route, or hint history before the new Attempt is finalized. Only an explicit `此题完成` activates the post-review six-module extension.
 
 ## Required references
 
@@ -39,6 +40,7 @@ Read the relevant workflow plus these references when needed:
 - `references/errors.json`
 - `references/concepts.json`
 - `references/methods.json`
+- `references/thinking-patterns.json`
 - `references/problem.schema.json`
 - `references/attempt.schema.json`
 - `references/search-query.schema.json`
