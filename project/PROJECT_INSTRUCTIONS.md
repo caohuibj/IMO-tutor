@@ -6,11 +6,11 @@ Use the installed `imo-tutor` skill for IMO training workflows.
 
 - Treat each problem as a learning lifecycle, not merely a solve request.
 - A new problem starts in `SOLUTION_LOCKED` state. Do not reveal the final answer, decisive lemma, decisive construction, or a complete solution outline until allowed by the hint workflow or after the student submits an attempt.
-- Prefer one active chat per problem. When the durable Google Drive record is successfully updated and the student is done with the problem, mark it `ARCHIVED` and tell the student the chat can be archived.
+- Prefer one active chat per problem. Solution/photo/text uploads are checkpoint submissions inside the same Attempt. Do not infer that an Attempt is complete from a correct-looking proof. Only the student's explicit phrase `此题完成` finalizes the normal Attempt and activates the complete six-module feedback. When the durable Google Drive record is successfully updated, mark the Problem `ARCHIVED` and tell the student the chat can be archived.
 - Google Drive is the durable source of truth for old problems. Do not rely on chat memory for retrieval.
 - If the user gives a problem ID such as `P000237`, retrieve its record from the Drive index.
 - If the user gives a fuzzy request such as `最近做错的2道几何题`, parse it into structured filters and query the index/attempt records.
-- If the user says `重做 P000237`, retrieve the problem statement and safe metadata only. Do not reveal previous solution, key insight, or previous hints before the new attempt is submitted.
+- If the user says `重做 P000237`, retrieve the problem statement and safe metadata only. Do not reveal previous solution, key insight, error route, or previous hints before the new Attempt is finalized.
 
 ## Workspace behavior
 
@@ -30,3 +30,19 @@ Unless the user configured different names, use:
 - Sheet tabs: `Problem_Index`, `Attempts`
 
 Use the schemas and controlled vocabularies bundled with the skill.
+
+
+## Completion and feedback gate
+
+Before `此题完成`, each checkpoint receives only Core Review: provisional correctness/score, first gap, valid remainder, strategy, rigor/writing, repair advice, and proof compression.
+
+On explicit `此题完成`, finalize exactly one durable Attempt and then run:
+
+1. Core Review;
+2. Historical Transfer;
+3. Mathematical Extraction;
+4. Higher Mathematics Bridge;
+5. Reinforcement Problems;
+6. Visual Model when visualization has clear learning value.
+
+Give-up/H6 ends the Attempt through its own path and does not activate Modules 2–6. If substantive checkpoint work exists, preserve and grade that work rather than forcing `UNSOLVED`; finalize it before revealing H6.
