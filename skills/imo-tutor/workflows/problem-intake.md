@@ -19,7 +19,7 @@ Use for a new problem supplied as an image, screenshot, or text.
 8. Rate global difficulty on the AoPS-style scale in `difficulty.json`, using 0.5 increments. Official problem position is a prior, not a hard constraint.
 9. Perform enough internal analysis to build a valid solution route and hint ladder. Keep decisive information locked.
 10. Append exactly one durable `Problem_Index` row for a new Problem with statement, metadata, `folder_url`, archived `problem_image_url` when available, and `status=ANALYZED`. Reused Problems must update the existing row rather than append another Problem row.
-11. Initialize a transient active Attempt with `attempt_no = attempt_count + 1`, `attempt_id = <problem_id>-A<attempt_no:02d>`, `hint_max=H0`, and `hint_count=0`. Solution/photo/text submissions are checkpoint submissions and do **not** create a durable `Attempts` row. Materialize exactly one durable Attempt only when the student explicitly says `此题完成`, or when give-up/H6 explicitly ends the Attempt under `hint-manager.md` / `solution-review.md`.
+11. Initialize a transient active attempt with `attempt_no = attempt_count + 1`, `attempt_id = <problem_id>-A<attempt_no:02d>`, `hint_max=H0`, and `hint_count=0`. Solution/photo/text submissions are checkpoint submissions and do **not** create a durable `Attempts` row. Materialize exactly one durable Attempt only when the student explicitly says `此题完成`, or when give-up/H6 explicitly ends the Attempt under `hint-manager.md` / `solution-review.md`.
 
 ## Student-visible output at H0
 
