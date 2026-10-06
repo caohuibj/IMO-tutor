@@ -43,20 +43,24 @@ H3
 
 提示按级别逐步增加。不要一开始就请求 H6，除非你决定结束独立 Attempt。
 
-### Step 3 — 提交解答
+### Step 3 — 提交 checkpoint
 
-可以上传手写解答图片，也可以提交解答文本。
+可以上传手写解答图片，也可以提交解答文本，而且同一道题可以多次提交。
 
-系统会：
+**每次照片/文字提交默认只是当前 Attempt 内的 checkpoint，不代表 Attempt 已完成。**
 
-- 保留原始解答图（runtime 能真实上传时）；
-- 转写为 Markdown/LaTeX；
-- 找出第一个数学上不可接受的步骤；
-- 判断 verdict / result bucket；
-- 估计 0–7 分；
-- 记录 error tags、method tags、hint 使用和时间等 Attempt 数据。
+checkpoint 阶段系统会：
 
-### Step 4 — 看批改
+- 累积保存当前 Attempt 的原始解答图（runtime 能真实上传时）；
+- 转写当前数学工作；
+- 给出 Core Review：暂定 verdict / 估分、first gap、有效部分、strategy、rigor/writing、repair advice、proof compression；
+- 接受后续补页和明确修订；
+- 不创建最终 `Attempts` row；
+- 不启动 Historical Transfer、Mathematical Extraction、Higher Mathematics Bridge、Reinforcement Problems 或 Visual Model。
+
+即使当前证明已经看起来完整正确，系统也不会自行判断“做完了”。
+
+### Step 4 — 根据 Core Review 继续修订
 
 优先关注：
 
@@ -68,7 +72,30 @@ H3
 
 不要只看分数。
 
-### Step 5 — 完成归档
+### Step 5 — 明确完成 Attempt
+
+当你确认本题已经结束，发送：
+
+```text
+此题完成
+```
+
+只有这句话会触发正常完成路径。系统此时会：
+
+1. 汇总本 Attempt 的全部 checkpoint 和明确修订；
+2. 做最终 Core Review；
+3. materialize **唯一一条** durable Attempt；
+4. 启动完整六模块反馈：
+   - Core Review；
+   - Historical Transfer；
+   - Mathematical Extraction；
+   - Higher Mathematics Bridge；
+   - Reinforcement Problems；
+   - Visual Model（有明确学习价值时）。
+
+Give-up / H6 是另外的结束路径，不会自动触发 Modules 2–6。
+
+### Step 6 — 完成归档
 
 当 durable Note 和 Sheets 更新完成后，系统会把该 Problem 置为 `ARCHIVED`。
 
@@ -167,7 +194,7 @@ P000237-A02｜Redo
 
 ### Step 3 — 完成新 Attempt
 
-像第一次一样独立作答、请求 Hint、提交、批改和归档。
+像第一次一样独立作答、请求 Hint、进行一次或多次 checkpoint 提交与 Core Review。只有准备结束 A02 时才发送 `此题完成`，随后才运行完整六模块反馈并归档。
 
 ### Step 4 — 看进步
 
