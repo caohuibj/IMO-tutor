@@ -14,10 +14,15 @@ class FeedbackV052ContractTests(unittest.TestCase):
 
     def test_checkpoint_does_not_finalize_or_run_transfer(self):
         review = self.read_workflow("solution-review.md")
+        intake = self.read_workflow("problem-intake.md")
+        no_spoiler = self.read_workflow("no-spoiler-analysis.md")
         self.assertIn("checkpoint submission", review)
         self.assertIn("Do not infer completion", review)
         self.assertIn("Before `此题完成`, stop here.", review)
         self.assertIn("Do not create a second durable Attempt row", review)
+        self.assertIn("checkpoint submissions and do **not** create a durable `Attempts` row", intake)
+        self.assertIn("student-visible output remains **Module 1 — Core Review only**", no_spoiler)
+        self.assertIn("A checkpoint does not by itself unlock the complete solution route or Modules 2–6", no_spoiler)
 
     def test_explicit_completion_is_six_module_gate(self):
         review = self.read_workflow("solution-review.md")
@@ -40,6 +45,12 @@ class FeedbackV052ContractTests(unittest.TestCase):
         self.assertIn("do not force `UNSOLVED`", hints)
         self.assertIn("Finalize the current student work **before** revealing the H6 solution", hints)
         self.assertIn("Neither give-up nor H6 activates Historical Transfer", review)
+
+    def test_redo_auto_comparison_requires_explicit_completion(self):
+        retrieval = self.read_workflow("problem-retrieval.md")
+        self.assertIn("only when the new redo Attempt was completed through explicit `此题完成`", retrieval)
+        self.assertIn("ended through give-up/H6 without `此题完成`", retrieval)
+        self.assertIn("do **not** automatically load old Attempt content", retrieval)
 
     def test_historical_transfer_is_attempt_grain_and_excludes_current(self):
         retrieval = self.read_workflow("problem-retrieval.md")
