@@ -111,7 +111,7 @@ For `重做 P000237`:
 
 ## Post-redo comparison
 
-Automatically load the immediately preceding Attempt and show the redo progress comparison **only when the new redo Attempt was completed through explicit `此题完成`**. This comparison may be incorporated into Module 2 — Historical Transfer.
+Only after the new Attempt is finalized may any post-redo comparison occur. Automatically load the immediately preceding Attempt and show the redo progress comparison **only when the new redo Attempt was completed through explicit `此题完成`**. This comparison may be incorporated into Module 2 — Historical Transfer.
 
 If the redo Attempt ended through give-up/H6 without `此题完成`, do **not** automatically load old Attempt content or emit post-redo comparison as part of the ending feedback. Historical comparison is allowed later only if the user separately requests retrieval/comparison after the Attempt has ended.
 
