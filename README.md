@@ -32,7 +32,9 @@ v1.0 采用 **capability-gated** 支持方式，不假设所有 ChatGPT plan / w
 
 - **No spoiler by default**：新题进入 `SOLUTION_LOCKED`，除非学生主动请求提示，否则不提前泄露关键引理、构造或完整解法。
 - **Progressive hints**：按 `H1–H6` 逐级给提示。
-- **Proof review**：检查正确性、严谨性、策略和表达，保留手写原图并转写 Markdown/LaTeX。
+- **Checkpoint proof review**：每次上传只视为同一 Attempt 内的 checkpoint；检查正确性、严谨性、策略和表达，保留手写原图并转写 Markdown/LaTeX。
+- **Explicit completion gate**：只有学生明确说 `此题完成` 才 finalize 正常 Attempt，并启动完整的六模块反馈。
+- **Post-review transfer**：完成后依次加入历史迁移、Technique/Insight/Thinking Pattern 抽提、高等数学连接、强化题推荐，以及适用时的数学 Visual Model。
 - **Durable archive**：题目、Attempt、Note 和检索字段写入学生自己的 Google Drive / Sheets。
 - **Retrieval**：支持 `P00237`、`最近做错的2道几何题` 等精确/模糊检索。
 - **Redo**：`重做 P00237` 创建新的 Attempt，提交前隔离旧解答；完成后比较例如 `52 min + H3 + 3/7` 与 `24 min + H0 + 7/7`。
@@ -88,6 +90,7 @@ Google Sheets: IMO Learning DB
 | v0.2 | Google Drive / Sheets 持久化闭环 |
 | v0.3 | 教学质量校准：no-spoiler、hints、批改、difficulty/tags |
 | v0.4 | 检索 + 重做 + 多 Attempt |
+| v0.5 | completion gate + 六模块反馈 + transfer / higher-math / reinforcement / visual model |
 | v1.0 | 单个学生可独立安装、迁移并长期使用 |
 
 ### v1.x 明确不做
