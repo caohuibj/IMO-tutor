@@ -1,0 +1,14 @@
+{
+  "TP.REFORMULATION": "Change to an equivalent or more revealing representation before attacking the original form.",
+  "TP.LINEARIZATION": "Transform or compare objects so that nonlinear structure reduces to linear structure.",
+  "TP.LOCAL_TO_GLOBAL": "Derive a global conclusion from local constraints, compatibility, or repeated local relations.",
+  "TP.EXTREMALIZATION": "Choose an extremal object or parameter so that the extremal property forces structure.",
+  "TP.MINIMAL_COUNTEREXAMPLE": "Assume failure, choose a minimal bad object, and construct a smaller bad object or contradiction.",
+  "TP.INVARIANT": "Identify a quantity or structure preserved by the allowed transformation or process.",
+  "TP.MONOTONICITY": "Track an ordered quantity that moves in only one direction and use boundedness or extremality.",
+  "TP.SYMMETRY_BREAKING": "Fix a representative, direction, label, or normalization to remove redundant symmetry.",
+  "TP.ENCODING": "Replace the original objects by a more useful combinatorial, algebraic, geometric, or graph representation.",
+  "TP.DECOMPOSITION_RECONSTRUCTION": "Split an object into controlled pieces, solve or count locally, then reconstruct the whole.",
+  "TP.DUAL_COUNTING": "Evaluate the same finite structure in two aggregation orders or from two incidence viewpoints.",
+  "TP.DESCENT": "Produce a strictly smaller or simpler object of the same forbidden type and iterate or contradict well-ordering."
+}

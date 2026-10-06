@@ -13,28 +13,18 @@
 
 ## Attempts
 
-{{attempt_history}}
+{{attempt_blocks}}
 
-## Student solution
+## Problem-level Synthesis
 
-{{solution_transcription}}
-
-## Review
-
-{{review}}
-
-## Reference-solution comparison
-
-{{comparison}}
-
-## Key insight
+### Key insight
 
 {{key_insight}}
 
-## Actual blocker
+### Actual blocker / current status
 
 {{blocker}}
 
-## Next time I see this
+### Next time I see this
 
 {{transfer_cue}}

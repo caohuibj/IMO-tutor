@@ -19,9 +19,11 @@ Google Sheets: IMO Learning DB
 
 同一个工作 Chat 不要连续处理多道正式题目。每道新题和每次正式 redo 都使用独立工作 Chat。
 
-### 完成即归档
+### 完成即归档：`此题完成` 是正常 Attempt 的唯一完成触发器
 
-当 durable Note、`Problem_Index`、`Attempts` 全部写入并 readback 成功后，该工作 Chat 就完成使命，应归档。
+照片、文字、补页都只是 checkpoint。只有学生明确发送 `此题完成`，才 finalize 正常 Attempt 并运行完整六模块反馈。Give-up/H6 可结束 Attempt，但不会激活 Modules 2–6。
+
+当 durable Note、`Problem_Index`、`Attempts` 全部写入并 readback 成功后，该工作 Chat 才完成使命，应归档。
 
 ## 2. 推荐的 Project 结构
 
@@ -157,8 +159,11 @@ Progress Dashboard
 → 分配 Pxxxxx
 → SOLUTION_LOCKED
 → 作答 / Hints
-→ 提交
-→ Review
+→ checkpoint 提交
+→ Core Review
+→ 可继续提交 / 修订
+→ 此题完成
+→ Final Core Review + Modules 2–6
 → Note + Sheets readback
 → ARCHIVED
 → 归档 Chat
@@ -173,8 +178,10 @@ Progress Dashboard
 → 创建下一个 Attempt
 → SOLUTION_LOCKED
 → 独立重做
-→ Review
-→ A01 vs A02 comparison
+→ checkpoint + Core Review
+→ 此题完成
+→ Final Core Review + six-module transfer
+→ A01 vs A02 / historical transfer
 → durable update
 → 归档 Chat
 ```

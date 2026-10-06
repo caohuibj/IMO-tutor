@@ -1,10 +1,10 @@
 # Problem Retrieval
 
-Use for exact IDs, fuzzy natural-language searches, and redo requests in a new or existing chat.
+Use for exact IDs, fuzzy natural-language searches, redo requests, and post-review historical-transfer retrieval.
 
 ## Source of truth
 
-Query Google Drive/Sheets durable records. Do not answer from remembered chat history when the request refers to prior student work. Continue using `Problem_Index`, `Attempts`, and the durable problem note; do not introduce vector search or another retrieval store for v0.4.
+Query Google Drive/Sheets durable records. Do not answer from remembered chat history when the request refers to prior student work. Continue using `Problem_Index`, `Attempts`, and the durable problem note; do not introduce vector search or another retrieval store in this workflow.
 
 ## Action precedence
 
@@ -64,6 +64,36 @@ When no result filter is present, attempt-level filters such as `hint_min`, `met
 
 For category-prefix error filters such as `LOGIC.*`, match any stored `error_tag` beginning with `LOGIC.`.
 
+## Post-review historical-transfer retrieval
+
+Use this mode only after the current Attempt has been explicitly completed with `此题完成` and finalized. It is an internal retrieval path for Module 2 of `post-review-transfer.md`, not a substitute for user-facing fuzzy search.
+
+Build a small historical candidate set at **Attempt grain**. Before ranking:
+
+- exclude the current `attempt_id`;
+- do not deduplicate by `problem_id`;
+- allow older Attempts of the same Problem;
+- for same-Problem candidates require `attempt_no < current attempt_no`.
+
+Derive an internal current-Attempt transfer signature before ranking. It may include exact Note-level `TP.*` Thinking Pattern IDs from `thinking-patterns.json`; this prepass is retrieval-only and does not alter the student-visible six-module order.
+
+Then rank in this order:
+
+1. same or closely related `TP.*` Thinking Pattern IDs from durable Attempt blocks/notes;
+2. same or closely related `error_tags` / `error_targets`;
+3. same student-used `method_tags`;
+4. same or closely related `concept_tags`;
+5. structurally similar blocker or proof pattern using `search_text` as a fallback;
+6. same surface domain/topic only as a weak fallback.
+
+Use Sheet fields for efficient initial recall, then exact `TP.*` matches in durable notes when cross-domain structural retrieval is useful. Do not introduce a vector store.
+
+Prefer mathematical-mechanism similarity over source, score, or superficial wording. A previous high-scoring Attempt may still be useful if it exposed the same fragile step; a previous low-scoring Attempt may be irrelevant if its blocker was different.
+
+Retrieve 3–5 candidates when possible, then inspect only the 1–2 strongest candidate notes/Attempts in depth. The goal is to decide whether a previously observed issue is now `RESOLVED`, `IMPROVED`, `RECURRED`, `NOT_TESTED`, or has been replaced by a `NEW_ISSUE`. These judgments are note-level prose labels in this version, not stored enums.
+
+Do not run this mode before a redo has been explicitly completed with `此题完成`.
+
 ## Redo mode
 
 For `重做 P000237`:
@@ -74,8 +104,10 @@ For `重做 P000237`:
 4. reuse the existing Problem folder and note identity. Do not append a new `Problem_Index` row;
 5. start a transient active attempt with `attempt_no = attempt_count + 1`, `attempt_id = <problem_id>-A<attempt_no:02d>`, `hint_max=H0`, and `hint_count=0`;
 6. set `SOLUTION_LOCKED` and follow the normal hint/review flow;
-7. materialize exactly one new durable `Attempts` row only when the student submits work or explicitly ends the attempt without a submission;
-8. after finalization, update the same `Problem_Index` row and the same `<problem_id> Note`.
+7. checkpoint submissions do not materialize a durable `Attempts` row; keep the redo Attempt active across one or more submissions;
+8. materialize exactly one new durable `Attempts` row when the student explicitly says `此题完成`, or when an existing give-up/H6 rule explicitly ends the Attempt;
+9. only the `此题完成` path activates the six-module post-review transfer workflow;
+10. after finalization, update the same `Problem_Index` row and the same `<problem_id> Note`.
 
 ## Post-redo comparison
 
@@ -98,3 +130,5 @@ Change: -28 min | H3 -> H0 | +4 points
 ```
 
 If a field is missing, omit that comparison rather than inventing a value. The comparison is derived from `Attempts`; no additional persistence layer is needed.
+
+The post-redo comparison may be incorporated into the broader Historical Transfer module when that produces a clearer training narrative.

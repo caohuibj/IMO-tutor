@@ -183,15 +183,29 @@ Web 上可在 sidebar 对话的 `⋯` 菜单选择 `Pin chat`；移动端可长�
 2. 再输入 `H2`。
 3. 确认提示逐级增加，没有直接跳到完整解法。
 
-### C. 提交与批改
+### C. checkpoint 提交与 Core Review
 
 1. 上传手写解答图片或提交解答文本。
 2. 确认原始解答图在 runtime 可 materialize 时被保存到同一 Problem folder。
-3. 确认生成 Markdown/LaTeX transcription。
-4. 确认完成 proof review。
-5. 检查 `Attempts`：应出现 `P000001-A01`，且只出现一行对应这个完成的 Attempt。
+3. 确认生成当前 Markdown/LaTeX transcription。
+4. 确认收到 Core Review。
+5. **此时不要有最终 `Attempts` row**；checkpoint 不能自动 finalize。
+6. 再补交一页或一次修订，确认仍属于同一个 `P000001-A01`。
 
-### D. 归档
+### D. 明确完成与六模块反馈
+
+1. 发送：
+
+```text
+此题完成
+```
+
+2. 确认系统汇总所有 checkpoint 并做最终 Core Review。
+3. 确认随后出现 Historical Transfer、Mathematical Extraction、Higher Mathematics Bridge、Reinforcement Problems，以及适用时的 Visual Model。
+4. 检查 `Attempts`：现在应出现且只出现一行 `P000001-A01`。
+5. 确认同一 Attempt 的多次 checkpoint 没有产生多行记录。
+
+### E. 归档
 
 1. 完成该题的 durable Note。
 2. 确认 `P000001 Note` 可读取。
@@ -232,7 +246,7 @@ P000001
 3. 提交前只显示题面和安全 metadata；
 4. 不显示 A01 的旧解答、key insight、error route 或 hint history；
 5. 状态重新进入 `SOLUTION_LOCKED`；
-6. A02 完成后，`Attempts` 总共有两行：A01、A02；
+6. 对 A02 明确发送 `此题完成` 后，`Attempts` 总共有两行：A01、A02；
 7. 系统能够比较 A01 与 A02 的时间、hint、score/result 等进步数据。
 
 完成后再次归档该工作 Chat。
