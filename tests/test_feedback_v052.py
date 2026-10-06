@@ -38,7 +38,7 @@ class FeedbackV052ContractTests(unittest.TestCase):
         review = self.read_workflow("solution-review.md")
         self.assertIn("substantive checkpoint submissions", hints)
         self.assertIn("do not force `UNSOLVED`", hints)
-        self.assertIn("finalize the current student work **before** revealing the H6 solution", hints)
+        self.assertIn("Finalize the current student work **before** revealing the H6 solution", hints)
         self.assertIn("Neither give-up nor H6 activates Historical Transfer", review)
 
     def test_historical_transfer_is_attempt_grain_and_excludes_current(self):
